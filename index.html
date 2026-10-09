@@ -1,0 +1,1048 @@
+<!doctype html> <!-- Indica al navegador que es un documento HTML5 moderno -->
+<html lang="es"> <!-- Raíz del documento; lang="es" indica que el contenido está en español -->
+<head> <!-- Cabecera: metadatos, título, fuentes y estilos (no se ve en la página) -->
+<meta charset="utf-8"> <!-- Codificación UTF-8 para que se vean bien tildes y eñes -->
+<meta name="viewport" content="width=device-width,initial-scale=1"> <!-- Adapta el ancho de la página a la pantalla del móvil -->
+<title>Playas de Canarias</title> <!-- Texto que aparece en la pestaña del navegador -->
+<link rel="preconnect" href="https://fonts.googleapis.com"> <!-- Abre la conexión con Google Fonts por adelantado para cargar antes -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Nunito+Sans:wght@400;600;700&display=swap"> <!-- Tipografías: Outfit (titulares geométricos) y Nunito Sans (texto) -->
+<style> /* Inicio de la hoja de estilos CSS */
+/* Estilo inspirado en la web de promoción turística de Canarias: fondo blanco, azul marino, azul océano, amarillo sol, esquinas redondeadas y botones en píldora */
+:root{ /* Variables globales (tokens) del tema claro: cambia aquí los colores y fuentes de toda la página */
+  --bg:#ffffff; /* Fondo de la página: blanco limpio */
+  --surface:#ffffff; /* Fondo de las tarjetas */
+  --soft:#eef5fb; /* Azul cielo muy claro para zonas destacadas */
+  --ink:#0b2341; /* Texto principal: azul marino profundo */
+  --muted:#5b6b80; /* Texto secundario: gris azulado */
+  --line:#dbe5ef; /* Bordes y separadores */
+  --sea:#0a5fb4; /* Azul océano: enlaces y acentos */
+  --sea-soft:#d8e9f8; /* Azul océano suave para rellenos */
+  --sun:#ffc72c; /* Amarillo sol: botones principales y recomendación */
+  --sun-ink:#0b2341; /* Color del texto sobre el amarillo */
+  --hero-a:#0a5fb4; /* Color inicial del degradado de la cabecera */
+  --hero-b:#0b2341; /* Color final del degradado de la cabecera */
+  --good:#13855a; /* Verde: condición buena */
+  --warn:#b26b00; /* Ámbar: condición intermedia */
+  --bad:#c8322b; /* Rojo: condición mala */
+  --radius:18px; /* Radio de esquina de tarjetas y bloques grandes */
+  --shadow:0 6px 24px rgba(11,35,65,.08); /* Sombra suave de las tarjetas */
+  --f-display:"Outfit","Trebuchet MS",system-ui,sans-serif; /* Fuente de titulares con alternativas */
+  --f-body:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif; /* Fuente del texto normal */
+  --f-mono:"Nunito Sans",system-ui,sans-serif; /* Fuente para datos pequeños (la misma que el texto, con cifras tabulares) */
+} /* Fin de las variables del tema claro */
+@media (prefers-color-scheme: dark){ /* Se aplica solo si el sistema del usuario está en modo oscuro */
+  :root{ /* Redefine las mismas variables con colores oscuros */
+    --bg:#071629; /* Fondo azul noche */
+    --surface:#0e2440; /* Tarjetas azul marino */
+    --soft:#12304f; /* Zonas destacadas en modo oscuro */
+    --ink:#eaf2fb; /* Texto claro */
+    --muted:#9db0c6; /* Texto secundario claro */
+    --line:#1f3b5c; /* Bordes en modo oscuro */
+    --sea:#6cb6ff; /* Azul océano luminoso para que contraste */
+    --sea-soft:#163a60; /* Azul suave oscuro */
+    --sun:#ffd25a; /* Amarillo sol algo más claro */
+    --sun-ink:#071629; /* Texto oscuro sobre el amarillo */
+    --hero-a:#0d4f93; /* Degradado de cabecera, inicio */
+    --hero-b:#071629; /* Degradado de cabecera, final */
+    --good:#4fd39a; /* Verde claro */
+    --warn:#ffb648; /* Ámbar claro */
+    --bad:#ff7d74; /* Rojo claro */
+    --shadow:0 6px 24px rgba(0,0,0,.35); /* Sombra más marcada sobre fondo oscuro */
+    color-scheme:dark; /* Pide al navegador controles y barras de scroll oscuros */
+  } /* Fin de variables oscuras */
+} /* Fin del bloque de modo oscuro */
+*{box-sizing:border-box} /* El ancho de cada caja incluye su padding y borde */
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55} /* Estilo base de toda la página */
+.wrap{max-width:1160px;margin:0 auto;padding:20px 16px 56px;display:flex;flex-direction:column;gap:24px} /* Contenedor central con ancho máximo y separación vertical */
+header{background:linear-gradient(135deg,var(--hero-a),var(--hero-b));color:#fff;border-radius:var(--radius);padding:clamp(24px,5vw,48px);display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 24px;position:relative;overflow:hidden} /* Cabecera tipo "hero": banda azul océano con esquinas redondeadas */
+header{min-height:340px;background-image:linear-gradient(to top,rgba(7,22,41,.82),rgba(7,22,41,.25) 60%,rgba(7,22,41,.1)),var(--hero-photo,none),linear-gradient(135deg,var(--hero-a),var(--hero-b));background-size:cover;background-position:center} /* Tres capas de fondo: velo oscuro para leer el texto, foto de la isla (si la hay) y degradado azul de reserva */
+header.has-photo::after{display:none} /* Con foto, se oculta el sol decorativo */
+header.has-photo{padding-bottom:56px} /* Deja sitio abajo para el crédito de la foto */
+.credit{position:absolute;left:clamp(24px,5vw,48px);right:clamp(24px,5vw,48px);bottom:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:12px;color:rgba(255,255,255,.85);z-index:1} /* Crédito de la foto, abajo a la izquierda */
+.credit a{color:#fff;text-decoration:underline} /* Enlace del crédito */
+.credit button{background:rgba(255,255,255,.18);color:#fff;border:0;border-radius:999px;padding:4px 10px;font:inherit;font-size:12px;cursor:pointer} /* Botón "Otra foto" */
+.credit button:hover{background:rgba(255,255,255,.3)} /* Botón algo más claro al pasar el ratón */
+header::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:var(--sun);opacity:.9} /* Sol amarillo decorativo en la esquina */
+header > *{position:relative;z-index:1} /* Coloca el contenido por encima del sol decorativo */
+.kicker{display:block;font-family:var(--f-body);font-size:14px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85;margin-bottom:8px} /* Texto pequeño sobre el título */
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(2.2rem,6vw,3.8rem);line-height:1;margin:0;letter-spacing:-.01em;text-wrap:balance} /* Título grande */
+h1 span{color:var(--sun)} /* Nombre de la isla en amarillo sol */
+.status{display:flex;flex-direction:column;align-items:flex-end;gap:8px;font-size:13px;color:#fff;max-width:420px;text-align:right} /* Zona de estado dentro de la cabecera */
+.live{display:inline-flex;align-items:center;gap:8px;background:rgba(7,22,41,.72);color:#fff;padding:6px 12px;border-radius:999px} /* Indicador "en vivo" en píldora azul noche, legible también encima del sol */
+.live::before{content:"";flex:0 0 8px;height:8px;border-radius:50%;background:#4fd39a} /* Punto verde de "en vivo" */
+.live.err::before{background:#ff7d74} /* Punto rojo si hubo error */
+.live.loading::before{background:var(--sun)} /* Punto amarillo mientras carga */
+.btn{border:0;background:var(--sun);color:var(--sun-ink);border-radius:999px;padding:9px 18px;font:inherit;font-size:14px;font-weight:700;cursor:pointer} /* Botón principal amarillo en píldora */
+.btn:hover{filter:brightness(1.05);box-shadow:0 4px 14px rgba(0,0,0,.18)} /* Brillo y sombra al pasar el ratón */
+.islands{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px} /* Fila de islas en píldoras, desplazable en horizontal */
+.isl{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-family:var(--f-display);font-weight:500;font-size:15px;padding:9px 18px;border-radius:999px;cursor:pointer} /* Cada isla como píldora blanca */
+.isl:hover{border-color:var(--sea);color:var(--sea)} /* Píldora azul al pasar el ratón */
+.isl[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg);font-weight:700} /* Isla seleccionada: píldora azul marino */
+.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px} /* Fila de botones de día, desplazable en horizontal */
+.day{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;padding:10px 14px;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;min-width:84px} /* Cada botón de día */
+.day small{font-size:12px;color:var(--muted)} /* Fecha pequeña bajo el nombre del día */
+.day strong{font-family:var(--f-display);font-size:15px;font-weight:700;text-transform:capitalize} /* Nombre del día con mayúscula inicial */
+.day[aria-pressed="true"]{background:var(--sea);color:#fff;border-color:var(--sea)} /* Día seleccionado en azul océano */
+.day[aria-pressed="true"] small{color:#fff;opacity:.85} /* La fecha del día seleccionado en blanco */
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-offset:2px} /* Contorno amarillo visible al navegar con teclado */
+.best{display:flex;flex-direction:column;gap:6px;background:var(--sun);color:var(--sun-ink);border-radius:var(--radius);padding:20px 24px} /* Recuadro amarillo de "mejor opción del día" */
+.best .lbl{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase} /* Etiqueta superior del recuadro */
+.best .name{font-family:var(--f-display);font-weight:800;font-size:clamp(1.6rem,4vw,2.2rem);line-height:1.05} /* Nombre de la playa recomendada */
+.best p{margin:0;font-weight:600} /* Resumen de la recomendación */
+.filters{display:flex;flex-wrap:wrap;gap:8px} /* Fila de filtros que salta de línea si no cabe */
+.chip{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:999px;padding:7px 14px;font:inherit;font-size:14px;font-weight:600;cursor:pointer} /* Cada filtro con forma de píldora */
+.chip[aria-pressed="true"]{border-color:var(--sea);background:var(--sea);color:#fff} /* Filtro activo en azul océano */
+#coasts{display:flex;flex-direction:column;gap:36px} /* Separa verticalmente cada grupo de costa */
+.coast{display:flex;flex-direction:column;gap:14px} /* Grupo de una costa: título y rejilla */
+.coast h2{font-family:var(--f-display);font-weight:700;font-size:1.6rem;margin:0;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap} /* Título de la costa */
+.coast h2 small{font-family:var(--f-body);font-size:14px;color:var(--muted);font-weight:400} /* Subtítulo descriptivo de la costa */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px} /* Rejilla adaptable de tarjetas */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0;overflow:hidden;box-shadow:var(--shadow)} /* Tarjeta de cada playa con sombra suave */
+.photo{margin:-18px -18px 0;height:120px;display:flex;align-items:flex-end;justify-content:flex-start;padding:12px 14px;border:0;width:calc(100% + 36px);font:inherit;cursor:pointer} /* Franja superior grande, como la foto de una ficha */
+.s-dorada{background:linear-gradient(175deg,#2a8fd6 0 40%,#9fd3f2 40% 50%,#e9cf9b 50%)} /* Ilustración mar + arena dorada */
+.s-blanca{background:linear-gradient(175deg,#2a8fd6 0 40%,#9fd3f2 40% 50%,#f4ede1 50%)} /* Ilustración mar + arena blanca */
+.s-negra{background:linear-gradient(175deg,#2a8fd6 0 40%,#9fd3f2 40% 50%,#34312f 50%)} /* Ilustración mar + arena negra */
+.s-callaos{background:linear-gradient(175deg,#2a8fd6 0 40%,#9fd3f2 40% 50%,#80776e 50%)} /* Ilustración mar + callaos (piedras) */
+.s-rojiza{background:linear-gradient(175deg,#2a8fd6 0 40%,#9fd3f2 40% 50%,#93503a 50%)} /* Ilustración mar + arena rojiza */
+.photo.has-photo{background:linear-gradient(to top,rgba(7,22,41,.45),rgba(7,22,41,0) 55%),var(--beach-photo) center/cover no-repeat,#9fd3f2} /* Con foto real: velo inferior + foto de la playa (sustituye a la ilustración de arena) */
+.aemet{border-top:1px dashed var(--line);padding-top:10px;display:flex;flex-direction:column;gap:6px;font-size:13.5px} /* Bloque de la predicción de AEMET dentro de la tarjeta */
+.aemet .ah{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline} /* Cabecera del bloque: fuente a la izquierda, enlace a la derecha */
+.aemet .ah b{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)} /* Rótulo "AEMET · nombre" */
+.aemet a,.aemet .linkbtn{color:var(--sea);font-weight:700;font-size:13px} /* Enlaces del bloque */
+.aemet dl{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:0} /* Lista de datos en dos columnas: rótulo y valor */
+.aemet dt{color:var(--muted)} /* Rótulo del dato (Cielo, Viento…) */
+.aemet dd{margin:0;font-weight:600;min-width:0} /* Valor del dato */
+.aemet .small{color:var(--muted);font-size:12.5px;margin:0} /* Mensajes pequeños (cargando, sin datos…) */
+.pcredit{font-size:11.5px;color:var(--muted);margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap} /* Crédito de la foto de la playa, en una línea */
+.pcredit a{color:var(--muted)} /* Enlace del crédito en gris */
+.photo span{background:#fff;color:#0b2341;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;display:inline-flex;align-items:center;gap:6px;box-shadow:0 2px 8px rgba(0,0,0,.15)} /* Etiqueta "En directo" en píldora blanca */
+.photo span::before{content:"";width:8px;height:8px;border-radius:50%;background:#c8322b} /* Punto rojo de "en directo" */
+.photo:hover span{background:var(--sun);color:var(--sun-ink)} /* Etiqueta amarilla al pasar el ratón */
+.top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start} /* Fila superior: nombre a la izquierda, temperatura a la derecha */
+.top h3{margin:0;font-family:var(--f-display);font-weight:700;font-size:19px;line-height:1.2} /* Nombre de la playa */
+.town{font-size:14px;color:var(--muted)} /* Municipio y tipo de arena */
+.temp{font-family:var(--f-display);font-weight:800;font-size:2.6rem;line-height:.95;color:var(--sea);font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right} /* Temperatura grande en azul océano */
+.temp small{display:block;font-family:var(--f-body);font-size:12px;font-weight:600;color:var(--muted);margin-top:4px} /* Rótulo bajo la temperatura */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 8px;margin:0;padding:12px;background:var(--soft);border-radius:12px;font-variant-numeric:tabular-nums} /* Datos sobre un fondo azul cielo */
+.stat{display:flex;flex-direction:column;gap:2px;min-width:0} /* Cada dato: rótulo arriba, valor abajo */
+.stat dt{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)} /* Rótulo del dato */
+.stat dd{margin:0;font-weight:700;font-size:14px;display:flex;align-items:center;gap:4px} /* Valor del dato */
+.arrow{display:inline-block;transition:transform .3s} /* Flecha de dirección del viento, que gira */
+.ok{color:var(--good)} /* Texto verde */
+.mid{color:var(--warn)} /* Texto ámbar */
+.hi{color:var(--bad)} /* Texto rojo */
+.spark{display:block;width:100%;height:46px} /* Mini-gráfico de temperaturas de la semana */
+.spark text{font-size:9px;fill:var(--muted)} /* Texto dentro del mini-gráfico */
+.note{font-size:14px;color:var(--muted);margin:0} /* Nota descriptiva de la playa */
+.links{font-size:14px;margin:0;display:flex;gap:16px;flex-wrap:wrap} /* Fila de enlaces al pie de la tarjeta */
+.links a{color:var(--sea);font-weight:700;text-decoration:none} /* Enlaces sin subrayado, en negrita */
+.links a:hover{text-decoration:underline} /* Subrayado al pasar el ratón */
+.msg{padding:28px;border:2px dashed var(--line);border-radius:var(--radius);color:var(--muted)} /* Mensaje de carga o de error */
+.msg a{color:var(--sea)} /* Color del enlace dentro del mensaje */
+footer{font-size:14px;color:var(--muted);border-top:1px solid var(--line);padding-top:18px;max-width:75ch} /* Pie de página con la fuente de datos */
+footer a{color:var(--sea);font-weight:700} /* Enlaces del pie */
+dialog{border:0;border-radius:var(--radius);padding:0;width:min(780px,calc(100vw - 32px));max-height:calc(100vh - 48px);background:var(--surface);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.35)} /* Ventana emergente de las cámaras */
+dialog::backdrop{background:rgba(7,22,41,.65)} /* Oscurece el fondo en azul noche */
+.dlg-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:20px 22px;background:linear-gradient(135deg,var(--hero-a),var(--hero-b));color:#fff} /* Cabecera de la ventana con el mismo degradado */
+.dlg-head h2{margin:0;font-family:var(--f-display);font-weight:800;font-size:1.7rem;line-height:1.05} /* Título de la ventana */
+.dlg-head p{margin:4px 0 0;font-size:14px;opacity:.85} /* Subtítulo de la ventana */
+.dlg-body{padding:20px 22px;display:flex;flex-direction:column;gap:14px;overflow:auto} /* Contenido desplazable de la ventana */
+.cams{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px} /* Rejilla de cámaras */
+.cam{display:flex;flex-direction:column;gap:6px;min-width:0} /* Cada cámara: imagen y textos */
+.cam img,.cam iframe{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;background:var(--line);border:0;max-width:100%} /* Imagen o reproductor con proporción 16:9 */
+.cam b{font-family:var(--f-display);font-size:15px;line-height:1.3} /* Nombre de la cámara */
+.cam small{font-size:12px;color:var(--muted)} /* Distancia y hora de la imagen */
+.cam .row{display:flex;gap:12px;flex-wrap:wrap;font-size:14px} /* Fila de acciones de cada cámara */
+.cam .row a,.linkbtn{color:var(--sea);background:none;border:0;padding:0;font:inherit;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none} /* Enlaces y botones con aspecto de enlace */
+.keyform{display:flex;flex-direction:column;gap:10px;font-size:15px} /* Formulario para la clave de Windy */
+.keyform ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px} /* Pasos para conseguir la clave */
+.keyform a{color:var(--sea);font-weight:700} /* Enlaces del formulario */
+.keyrow{display:flex;gap:8px;flex-wrap:wrap} /* Campo de texto y botón en la misma fila */
+.keyrow input{flex:1 1 220px;min-width:0;padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:var(--soft);color:var(--ink);font:inherit;font-size:14px} /* Campo en píldora donde se pega la clave */
+#camClose{background:#fff;color:#0b2341} /* Botón "Cerrar" en blanco sobre la cabecera azul */
+@media (max-width:420px){.grid{grid-template-columns:1fr}.status{align-items:flex-start;text-align:left}} /* En móviles estrechos: una columna y estado alineado a la izquierda */
+</style> <!-- Fin de la hoja de estilos -->
+</head> <!-- Fin de la cabecera -->
+<body> <!-- Inicio del contenido visible -->
+<div class="wrap"> <!-- Contenedor principal centrado -->
+  <header> <!-- Cabecera visible de la página -->
+    <div> <!-- Bloque de título -->
+      <span class="kicker">El tiempo en la playa, en directo</span> <!-- Texto pequeño sobre el título -->
+      <h1>Playas de <span id="islandTitle">Canarias</span></h1> <!-- Título; el script cambia el nombre según la isla -->
+    </div> <!-- Fin del bloque de título -->
+    <div class="status"> <!-- Bloque de estado de los datos -->
+      <span class="live loading" id="live">Cargando previsión…</span> <!-- Indicador en vivo; el script cambia su texto y color -->
+      <button class="btn" id="refresh" type="button">Actualizar ahora</button> <!-- Botón para forzar una nueva descarga -->
+    </div> <!-- Fin del bloque de estado -->
+    <div class="credit" id="credit" hidden></div> <!-- Crédito de la foto de fondo; lo rellena el script -->
+  </header> <!-- Fin de la cabecera visible -->
+  <nav class="islands" id="islands" aria-label="Elegir isla"></nav> <!-- Aquí el script pinta las pestañas de las islas -->
+  <div class="days" id="days" role="group" aria-label="Elegir día"></div> <!-- Aquí el script pinta los botones de día -->
+  <div class="best" id="best" aria-live="polite" hidden></div> <!-- Aquí el script pinta la mejor playa; empieza oculto -->
+  <div class="filters" id="filters" role="group" aria-label="Filtrar por tipo de playa"></div> <!-- Aquí el script pinta los filtros -->
+  <div id="coasts"><p class="msg">Descargando la previsión de Open-Meteo…</p></div> <!-- Aquí van las tarjetas; de inicio muestra un mensaje de carga -->
+  <footer> <!-- Pie de página -->
+    Predicción oficial de playas: información elaborada por la <a href="https://www.aemet.es/" target="_blank" rel="noopener">Agencia Estatal de Meteorología (AEMET)</a>. Cámaras en directo de <a href="https://www.windy.com/webcams" target="_blank" rel="noopener">Windy Webcams</a>. Datos en vivo de <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (tiempo y mar), consultados para las coordenadas de cada playa y renovados cada 10 minutos. La exposición al alisio (viento del noreste) es una característica fija de cada playa: en casi todas las islas las costas norte y este son las más expuestas y el sur y suroeste las más resguardadas. Comprueba siempre las banderas del socorrista antes de bañarte. <!-- Texto informativo sobre la fuente -->
+  </footer> <!-- Fin del pie -->
+</div> <!-- Fin del contenedor principal -->
+<dialog id="camDialog" aria-labelledby="camTitle"> <!-- Ventana emergente donde se muestran las cámaras de una playa -->
+  <div class="dlg-head"> <!-- Cabecera de la ventana -->
+    <div><h2 id="camTitle">Cámaras</h2><p id="camSub"></p></div> <!-- Título y subtítulo; los rellena el script -->
+    <button class="btn" id="camClose" type="button">Cerrar</button> <!-- Botón para cerrar la ventana -->
+  </div> <!-- Fin de la cabecera -->
+  <div class="dlg-body" id="camBody"></div> <!-- Contenido: formulario de clave, cámaras o mensajes -->
+</dialog> <!-- Fin de la ventana emergente -->
+
+<script> // Inicio del código JavaScript
+"use strict"; // Modo estricto: el navegador avisa de errores comunes en lugar de ignorarlos
+
+const REFRESH_MS = 10 * 60 * 1000; // Cada cuánto se renueva la previsión: 10 minutos en milisegundos
+const TZ = "Atlantic/Canary"; // Zona horaria de Canarias, para que las fechas y horas sean las locales
+const TIMEOUT_MS = 30000; // Tiempo máximo de espera de cada petición: 30 segundos
+const RETRIES = 2; // Número de reintentos automáticos si una petición falla
+const CACHE_PREFIX = "playas-canarias-cache-"; // Prefijo con el que se guardan los últimos datos buenos de cada isla
+const PREF_KEY = "playas-canarias-isla"; // Clave con la que se recuerda la última isla elegida
+
+// Función auxiliar para escribir cada playa en una línea: nombre, municipio, lat, lon, costa, tipos, exposición (0-2), arena, nota y si es apta para el baño
+const B = (n, town, lat, lon, coast, type, exp, sand, note, swim = true) => ({n, town, lat, lon, coast, type, exp, sand, note, swim}); // Devuelve un objeto playa
+
+const ISLANDS = [ // Lista de islas con sus playas (coordenadas aproximadas de cada playa)
+  {id:"lanzarote", name:"Lanzarote", beaches:[ // Lanzarote
+    B("Playa de Papagayo","Yaiza",28.8425,-13.7870,"sur",["calma","naturaleza"],0,"Dorada","Cala protegida en el Monumento Natural de Los Ajaches; acceso por pista de tierra de pago."), // Papagayo
+    B("Playa Mujeres","Yaiza",28.8470,-13.7950,"sur",["calma","naturaleza"],0,"Dorada","Amplia y abierta, en la zona de Papagayo."), // Mujeres
+    B("Playa Dorada","Playa Blanca",28.8620,-13.8170,"sur",["calma","familias","servicios"],0,"Dorada","Agua tranquila junto al paseo marítimo."), // Dorada
+    B("Playa Flamingo","Playa Blanca",28.8600,-13.8420,"sur",["calma","familias","servicios"],0,"Dorada","Protegida por diques, ideal con niños."), // Flamingo
+    B("Playa Quemada","Yaiza",28.8920,-13.7230,"sur",["naturaleza"],1,"Callaos","Pueblo pesquero tranquilo, playa de piedra."), // Playa Quemada
+    B("Playa Grande","Puerto del Carmen",28.9210,-13.6630,"este",["familias","servicios"],1,"Dorada","La playa urbana más concurrida de la isla."), // Playa Grande
+    B("Playa de los Pocillos","Puerto del Carmen",28.9330,-13.6380,"este",["familias","servicios"],1,"Dorada","Larga y amplia; brisa frecuente por la tarde."), // Los Pocillos
+    B("Playa del Reducto","Arrecife",28.9560,-13.5590,"este",["familias","servicios"],0,"Dorada","Playa urbana de la capital, resguardada por el arrecife."), // El Reducto
+    B("Playa de las Cucharas","Costa Teguise",28.9990,-13.4950,"este",["surf","servicios"],2,"Dorada","Referencia para windsurf: recibe el alisio de lleno."), // Las Cucharas
+    B("Playa de Famara","Teguise",29.1160,-13.5560,"norte",["surf","naturaleza"],2,"Dorada","Bajo el Risco de Famara. Corrientes fuertes: baño con precaución."), // Famara
+    B("Caletón Blanco","Órzola",29.2190,-13.4520,"norte",["calma","familias","naturaleza"],1,"Blanca","Charcos de arena blanca entre lava negra, agua poco profunda."), // Caletón Blanco
+    B("Playa del Janubio","Yaiza",28.9370,-13.8320,"oeste",["naturaleza"],2,"Negra","Arena volcánica junto a las salinas. Baño desaconsejado.",false) // Janubio (no apta para baño)
+  ]}, // Fin de Lanzarote
+  {id:"graciosa", name:"La Graciosa", beaches:[ // La Graciosa
+    B("Playa de La Francesa","Caleta de Sebo",29.2370,-13.5070,"sur",["calma","naturaleza"],0,"Dorada","Agua turquesa y tranquila frente al Risco de Famara."), // La Francesa
+    B("Playa del Salado","Caleta de Sebo",29.2310,-13.5020,"sur",["calma","familias"],0,"Dorada","Junto al pueblo, cómoda para ir a pie desde el puerto."), // El Salado
+    B("Playa de las Conchas","Caleta de Sebo",29.2720,-13.5280,"norte",["naturaleza"],2,"Dorada","Muy bonita y muy peligrosa: corrientes fuertes, baño desaconsejado.",false), // Las Conchas
+    B("Playa Lambra","Caleta de Sebo",29.2800,-13.4950,"norte",["naturaleza"],2,"Dorada","Aislada en el extremo norte de la isla.") // Lambra
+  ]}, // Fin de La Graciosa
+  {id:"fuerteventura", name:"Fuerteventura", beaches:[ // Fuerteventura
+    B("Grandes Playas de Corralejo","La Oliva",28.7000,-13.8400,"este",["naturaleza","familias"],1,"Blanca","Junto al Parque Natural de las Dunas de Corralejo."), // Grandes Playas
+    B("Playa de La Concha","El Cotillo",28.6900,-14.0120,"norte",["calma","familias"],1,"Blanca","Lagunas resguardadas por arrecifes de roca."), // La Concha (El Cotillo)
+    B("Playa del Castillo","El Cotillo",28.6800,-14.0150,"oeste",["surf","naturaleza"],2,"Dorada","Oleaje frecuente, popular entre surfistas."), // El Castillo
+    B("Playa de Caleta de Fuste","Antigua",28.3940,-13.8570,"este",["calma","familias","servicios"],0,"Dorada","Bahía protegida en forma de herradura."), // Caleta de Fuste
+    B("Playa de Gran Tarajal","Tuineje",28.2110,-14.0220,"este",["familias","servicios"],1,"Negra","Playa urbana de arena oscura."), // Gran Tarajal
+    B("Playa de Sotavento","Pájara",28.1400,-14.2250,"sur",["surf","naturaleza"],2,"Blanca","Gran laguna con marea; meca del windsurf y el kitesurf."), // Sotavento
+    B("Playa de Esquinzo","Pájara",28.0770,-14.3000,"sur",["calma","naturaleza"],0,"Blanca","Larga y tranquila en la península de Jandía."), // Esquinzo
+    B("Playa del Matorral","Morro Jable",28.0500,-14.3500,"sur",["calma","familias","servicios"],0,"Blanca","Muy larga, junto al faro de Morro Jable."), // El Matorral
+    B("Playa de Cofete","Pájara",28.1030,-14.3880,"oeste",["naturaleza"],2,"Dorada","Salvaje e inmensa; corrientes muy peligrosas.",false), // Cofete
+    B("Playa de Ajuy","Pájara",28.3990,-14.1550,"oeste",["naturaleza"],2,"Negra","Junto a las cuevas de Ajuy; mar bravo.",false) // Ajuy
+  ]}, // Fin de Fuerteventura
+  {id:"grancanaria", name:"Gran Canaria", beaches:[ // Gran Canaria
+    B("Playa de Las Canteras","Las Palmas de G. C.",28.1390,-15.4370,"norte",["calma","familias","servicios"],1,"Dorada","Urbana y protegida por la barra natural de roca."), // Las Canteras
+    B("Playa de Las Alcaravaneras","Las Palmas de G. C.",28.1270,-15.4260,"este",["calma","familias","servicios"],0,"Dorada","Junto al muelle deportivo, agua tranquila."), // Alcaravaneras
+    B("Playa de Melenara","Telde",27.9900,-15.3730,"este",["familias","servicios"],1,"Negra","Pueblo marinero con paseo."), // Melenara
+    B("Pozo Izquierdo","Santa Lucía",27.8180,-15.4200,"este",["surf"],2,"Callaos","Uno de los puntos con más viento del mundo para windsurf."), // Pozo Izquierdo
+    B("Playa del Inglés","San Bartolomé de Tirajana",27.7560,-15.5730,"sur",["familias","servicios"],0,"Dorada","Gran playa turística junto a las dunas."), // Playa del Inglés
+    B("Playa de Maspalomas","San Bartolomé de Tirajana",27.7380,-15.5850,"sur",["naturaleza"],0,"Dorada","Frente a la Reserva Natural de las Dunas y el faro."), // Maspalomas
+    B("Playa de Amadores","Mogán",27.7890,-15.7230,"sur",["calma","familias","servicios"],0,"Blanca","Cala artificial muy resguardada."), // Amadores
+    B("Playa de Puerto de Mogán","Mogán",27.8160,-15.7630,"sur",["calma","familias","servicios"],0,"Dorada","Pequeña playa junto al puerto y sus canales."), // Puerto de Mogán
+    B("Playa de Güigüí","La Aldea de San Nicolás",27.9480,-15.8280,"oeste",["naturaleza"],1,"Dorada","Virgen; solo se llega a pie por un sendero largo o en barco."), // Güigüí
+    B("Playa de Sardina del Norte","Gáldar",28.1500,-15.7030,"norte",["calma","naturaleza"],1,"Dorada","Pequeña bahía resguardada, buena para buceo.") // Sardina
+  ]}, // Fin de Gran Canaria
+  {id:"tenerife", name:"Tenerife", beaches:[ // Tenerife
+    B("Playa de Las Teresitas","San Andrés",28.5070,-16.1870,"este",["calma","familias","servicios"],0,"Dorada","Arena traída del Sáhara, protegida por un rompeolas."), // Las Teresitas
+    B("Playa de Benijo","Anaga",28.5740,-16.1880,"norte",["naturaleza"],2,"Negra","Salvaje, bajo el macizo de Anaga; corrientes fuertes.",false), // Benijo
+    B("Playa Jardín","Puerto de la Cruz",28.4160,-16.5600,"norte",["familias","servicios"],2,"Negra","Arena volcánica con jardines; oleaje frecuente."), // Playa Jardín
+    B("Playa de El Bollullo","La Orotava",28.4180,-16.5130,"norte",["naturaleza"],2,"Negra","Cala entre acantilados; mar a menudo movido."), // El Bollullo
+    B("Playa de El Médano","Granadilla",28.0440,-16.5360,"sur",["surf","familias","servicios"],2,"Dorada","Mucho viento: referencia del windsurf y el kitesurf."), // El Médano
+    B("Playa de La Tejita","Granadilla",28.0320,-16.5560,"sur",["naturaleza"],2,"Dorada","Junto a la Montaña Roja; suele soplar el viento."), // La Tejita
+    B("Playa de Los Cristianos","Arona",28.0500,-16.7150,"sur",["calma","familias","servicios"],0,"Dorada","Urbana y resguardada junto al puerto."), // Los Cristianos
+    B("Playa de Troya","Adeje",28.0630,-16.7330,"sur",["familias","servicios"],0,"Dorada","En Playa de las Américas, muy concurrida."), // Troya
+    B("Playa del Duque","Adeje",28.0900,-16.7410,"sur",["calma","servicios"],0,"Dorada","Tranquila, en Costa Adeje."), // El Duque
+    B("Playa de la Arena","Santiago del Teide",28.2310,-16.8410,"oeste",["familias","servicios"],1,"Negra","Arena negra cerca de los acantilados de Los Gigantes.") // La Arena
+  ]}, // Fin de Tenerife
+  {id:"gomera", name:"La Gomera", beaches:[ // La Gomera
+    B("Playa de San Sebastián","San Sebastián",28.0900,-17.1100,"este",["familias","servicios"],0,"Negra","Playa de la capital, junto al puerto."), // San Sebastián
+    B("Playa de Santiago","Alajeró",28.0280,-17.1960,"sur",["calma","familias"],0,"Callaos","Pueblo pesquero soleado y tranquilo."), // Playa de Santiago
+    B("Playa de Valle Gran Rey","Valle Gran Rey",28.0850,-17.3350,"oeste",["familias","servicios"],0,"Negra","La más visitada de la isla, con buenas puestas de sol."), // Valle Gran Rey
+    B("Playa del Inglés","Valle Gran Rey",28.0950,-17.3430,"oeste",["naturaleza"],1,"Negra","Natural y abierta; oleaje y corrientes."), // Playa del Inglés (Gomera)
+    B("Playa de Alojera","Vallehermoso",28.1600,-17.3360,"oeste",["naturaleza","calma"],1,"Negra","Pequeña cala en un pueblo casi sin turistas."), // Alojera
+    B("Playa de La Caleta","Hermigua",28.1700,-17.1700,"norte",["naturaleza"],1,"Negra","Cala aislada en el norte, mar variable.") // La Caleta
+  ]}, // Fin de La Gomera
+  {id:"palma", name:"La Palma", beaches:[ // La Palma
+    B("Playa de Los Cancajos","Breña Baja",28.6500,-17.7600,"este",["calma","familias","servicios"],1,"Negra","Protegida por diques, buena para buceo."), // Los Cancajos
+    B("Playa de Nogales","Puntallana",28.7700,-17.7450,"este",["naturaleza"],2,"Negra","Espectacular bajo el acantilado; corrientes peligrosas.",false), // Nogales
+    B("Charco Azul","San Andrés y Sauces",28.8070,-17.7540,"norte",["calma","familias"],2,"Callaos","Piscinas naturales; se cierran con mar fuerte."), // Charco Azul
+    B("Playa de La Zamora","Fuencaliente",28.4700,-17.8500,"sur",["naturaleza"],1,"Negra","Cala entre plataneras y viñedos volcánicos."), // La Zamora
+    B("Charco Verde","Los Llanos de Aridane",28.5740,-17.8960,"oeste",["calma","familias"],0,"Negra","Cala resguardada en la costa soleada del oeste."), // Charco Verde
+    B("Playa de Puerto Naos","Los Llanos de Aridane",28.5830,-17.9130,"oeste",["familias","servicios"],0,"Negra","La principal zona de baño de la isla."), // Puerto Naos
+    B("Playa de Puerto de Tazacorte","Tazacorte",28.6430,-17.9440,"oeste",["familias","servicios"],0,"Negra","Playa junto al puerto, con restaurantes de pescado.") // Tazacorte
+  ]}, // Fin de La Palma
+  {id:"hierro", name:"El Hierro", beaches:[ // El Hierro
+    B("Tamaduste","Valverde",27.8250,-17.8920,"este",["calma","familias"],0,"Callaos","Ensenada natural de agua muy tranquila."), // Tamaduste
+    B("Playa de Timijiraque","Valverde",27.7700,-17.9000,"este",["naturaleza"],1,"Negra","Arena oscura bajo los riscos del este."), // Timijiraque
+    B("La Restinga","El Pinar",27.6400,-17.9810,"sur",["calma","familias","servicios"],0,"Negra","Puerto con aguas calmas; referencia del buceo."), // La Restinga
+    B("Playa del Verodal","Frontera",27.7850,-18.1370,"oeste",["naturaleza"],2,"Rojiza","Arena rojiza bajo acantilados; corrientes fuertes.",false), // El Verodal
+    B("Charco Manso","Valverde",27.8320,-17.9310,"norte",["naturaleza"],2,"Callaos","Charco volcánico; solo con mar en calma.",false), // Charco Manso
+    B("La Maceta","Frontera",27.7950,-17.9880,"norte",["calma","familias"],1,"Callaos","Piscinas naturales en El Golfo.") // La Maceta
+  ]} // Fin de El Hierro
+]; // Fin de la lista de islas
+
+const COASTS = [ // Grupos de costa en el orden en que se muestran
+  {id:"sur",t:"Costa sur",s:"Normalmente la más resguardada del alisio"}, // Sur
+  {id:"este",t:"Costa este",s:"Brisa del alisio, muchas playas urbanas"}, // Este
+  {id:"norte",t:"Costa norte",s:"Más viento y oleaje"}, // Norte
+  {id:"oeste",t:"Costa oeste",s:"Atardeceres; mar de fondo del Atlántico"} // Oeste
+]; // Fin de los grupos de costa
+
+const TYPES = [["todas","Todas"],["calma","Agua en calma"],["familias","Familias"],["surf","Surf y viento"],["naturaleza","Naturaleza"],["servicios","Con servicios"]]; // Filtros: [clave interna, texto visible]
+const EXP = [["Resguardada","ok"],["Media","mid"],["Expuesta","hi"]]; // Texto y color de cada nivel de exposición al alisio
+
+const state = {island:"lanzarote", day:0, type:"todas", weather:null, marine:null, updated:null, error:null, request:0}; // Estado de la app: isla, día, filtro, datos, hora, error y número de petición
+
+const island = () => ISLANDS.find(i => i.id === state.island); // Devuelve el objeto de la isla seleccionada
+const beaches = () => island().beaches; // Devuelve las playas de la isla seleccionada
+
+function urls() { // Construye las URLs de la API con las coordenadas de la isla seleccionada
+  const lats = beaches().map(b => b.lat).join(","); // Junta las latitudes separadas por comas para pedirlas en una sola llamada
+  const lons = beaches().map(b => b.lon).join(","); // Lo mismo con las longitudes
+  const common = "?latitude=" + lats + "&longitude=" + lons + "&timezone=" + encodeURIComponent(TZ) + "&forecast_days=7"; // Parte común: coordenadas, horario de Canarias y 7 días
+  return { // Devuelve las dos direcciones
+    weather: "https://api.open-meteo.com/v1/forecast" + common // API de previsión meteorológica
+      + "&current=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m" // Datos actuales: temperatura, cielo, velocidad y dirección del viento
+      + "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,wind_direction_10m_dominant,uv_index_max", // Datos diarios
+    marine: "https://marine-api.open-meteo.com/v1/marine" + common // API marina (olas y mar)
+      + "&current=wave_height,sea_surface_temperature" // Datos actuales: altura de ola y temperatura del agua
+      + "&daily=wave_height_max" // Dato diario: altura máxima de ola
+  }; // Fin del objeto de URLs
+} // Fin de urls
+
+const SKY = [ // Traducción de los códigos meteorológicos WMO a texto en español
+  [0,"Despejado"],[1,"Casi despejado"],[2,"Nubes y claros"],[3,"Cubierto"], // Códigos 0 a 3: cielo
+  [48,"Niebla"],[57,"Llovizna"],[67,"Lluvia"],[77,"Nieve"],[82,"Chubascos"],[86,"Chubascos de nieve"],[99,"Tormenta"] // Rangos superiores: el código se compara con el límite de cada rango
+]; // Fin de la tabla de códigos
+const skyText = code => (code == null ? "—" : SKY.find(([max]) => code <= max)[1]); // Devuelve el texto del primer rango cuyo límite sea mayor o igual al código
+
+const fmtDay = new Intl.DateTimeFormat("es-ES", {weekday:"short", timeZone:"UTC"}); // Formateador de día de la semana abreviado ("vie")
+const fmtNum = new Intl.DateTimeFormat("es-ES", {day:"numeric", month:"short", timeZone:"UTC"}); // Formateador de fecha corta ("9 oct")
+const fmtLong = new Intl.DateTimeFormat("es-ES", {weekday:"long", day:"numeric", month:"long", timeZone:"UTC"}); // Formateador de fecha larga
+const fmtTime = new Intl.DateTimeFormat("es-ES", {hour:"2-digit", minute:"2-digit", timeZone:TZ}); // Formateador de hora en horario canario
+const asDate = iso => new Date(iso + "T12:00:00Z"); // Convierte "2026-10-09" en un objeto Date al mediodía UTC para evitar saltos de día
+const round = v => (v == null ? "—" : Math.round(v)); // Redondea un número o muestra un guion si no hay dato
+
+async function getJson(url) { // Función auxiliar que descarga una URL y devuelve su JSON
+  const ctrl = new AbortController(); // Controlador que permite cancelar la petición
+  const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS); // Si no hay respuesta en el tiempo máximo, cancela la petición
+  let res; // Aquí se guardará la respuesta del servidor
+  try { // Intenta hacer la petición
+    res = await fetch(url, {signal: ctrl.signal}); // Hace la petición HTTP, vinculada al controlador de cancelación
+  } catch (e) { // Se ejecuta si la petición ni siquiera llegó a obtener respuesta
+    if (e.name === "AbortError") throw new Error("la petición tardó más de " + TIMEOUT_MS / 1000 + " s (red lenta o un proxy la retiene)"); // Caso de tiempo agotado
+    throw new Error("el navegador no pudo conectar con " + new URL(url).host + " (red, proxy, cortafuegos o bloqueador de anuncios)"); // Caso de red bloqueada
+  } finally { // Se ejecuta siempre, haya error o no
+    clearTimeout(timer); // Cancela el temporizador
+  } // Fin del try de la petición
+  const data = await res.json().catch(() => null); // Intenta leer el JSON; si no es JSON, deja null
+  if (!res.ok) throw new Error("HTTP " + res.status + (data && data.reason ? ": " + data.reason : "")); // Si el servidor responde con error, incluye el motivo que da Open-Meteo
+  if (!data) throw new Error("la respuesta no es JSON válido"); // Si respondió bien pero sin JSON, lo indica
+  return Array.isArray(data) ? data : [data]; // Con varias coordenadas la API devuelve una lista; con una sola, un objeto: siempre devolvemos lista
+} // Fin de getJson
+
+async function getJsonRetry(url, req) { // Igual que getJson, pero reintenta si falla
+  for (let attempt = 0; ; attempt++) { // Bucle de intentos: 0, 1, 2…
+    try { // Intenta la descarga
+      return await getJson(url); // Si sale bien, devuelve los datos y termina
+    } catch (e) { // Si falla…
+      if (attempt >= RETRIES || e.message.startsWith("HTTP 4") || req !== state.request) throw e; // …se rinde si no quedan reintentos, si es un error de parámetros (4xx) o si el usuario ya cambió de isla
+      setLive("loading", "Reintentando (" + (attempt + 2) + "/" + (RETRIES + 1) + ")…"); // Avisa de que vuelve a intentarlo
+      await new Promise(r => setTimeout(r, 2000 * (attempt + 1))); // Espera 2 s, luego 4 s… antes del siguiente intento
+    } // Fin del catch
+  } // Fin del bucle
+} // Fin de getJsonRetry
+
+function saveCache() { // Guarda en el navegador los últimos datos descargados con éxito de la isla actual
+  try { // localStorage puede fallar (modo privado, almacenamiento lleno): por eso va en try
+    localStorage.setItem(CACHE_PREFIX + state.island, JSON.stringify({weather: state.weather, marine: state.marine, updated: state.updated.toISOString()})); // Guarda tiempo, mar y hora como texto JSON, con una clave por isla
+  } catch (e) {} // Si no se puede guardar, se ignora: la app sigue funcionando
+} // Fin de saveCache
+
+function loadCache() { // Recupera los últimos datos guardados de la isla actual, si existen
+  state.weather = null; // Borra los datos de la isla anterior
+  state.marine = null; // Borra los datos marinos de la isla anterior
+  state.updated = null; // Borra la hora anterior
+  try { // Lectura protegida por si el almacenamiento no está disponible
+    const c = JSON.parse(localStorage.getItem(CACHE_PREFIX + state.island) || "null"); // Lee y convierte el texto guardado en objeto
+    if (!c || !Array.isArray(c.weather) || c.weather.length !== beaches().length) return; // Si no hay caché o no coincide con la lista de playas, no la usa
+    state.weather = c.weather; // Restaura la previsión guardada
+    state.marine = c.marine; // Restaura los datos marinos guardados
+    state.updated = new Date(c.updated); // Restaura la hora en que se descargaron
+    setLive("loading", "Mostrando datos de las " + fmtTime.format(state.updated) + " · actualizando…"); // Avisa de que son datos guardados mientras descarga
+  } catch (e) {} // Si falla la lectura, simplemente arranca sin caché
+} // Fin de loadCache
+
+async function load() { // Descarga los datos de tiempo y mar de la isla actual y vuelve a pintar la página
+  const req = ++state.request; // Número de esta petición; sirve para descartar respuestas de una isla que ya no está seleccionada
+  const u = urls(); // URLs con las coordenadas de la isla actual
+  if (!state.weather) setLive("loading", "Descargando " + island().name + "…"); // Si no hay datos en pantalla, avisa de la descarga
+  try { // Intenta descargar; si algo falla salta al bloque catch
+    const [weather, marine] = await Promise.all([ // Lanza las dos peticiones a la vez y espera a ambas
+      getJsonRetry(u.weather, req), // Petición de previsión meteorológica, con reintentos
+      getJsonRetry(u.marine, req).catch(() => null) // Petición marina; si falla, seguimos sin datos de mar en lugar de romper todo
+    ]); // Fin de las peticiones en paralelo
+    if (req !== state.request) return; // Si mientras tanto el usuario cambió de isla, ignora esta respuesta
+    state.weather = weather; // Guarda la previsión en el estado
+    state.marine = marine; // Guarda los datos marinos (o null)
+    state.updated = new Date(); // Guarda la hora de esta actualización
+    state.error = null; // Borra cualquier error anterior
+    saveCache(); // Guarda estos datos para mostrarlos si la próxima conexión falla
+    setLive("ok", "En vivo · actualizado a las " + fmtTime.format(state.updated)); // Indicador en verde con la hora
+  } catch (err) { // Se ejecuta si la descarga de la previsión falló
+    if (req !== state.request) return; // Si el error es de una isla anterior, lo ignora
+    state.error = err.message; // Guarda el mensaje de error
+    console.error("Error al descargar la previsión:", err, "URL:", u.weather); // Escribe el detalle en la consola del navegador (F12)
+    const when = state.updated ? " Se muestran los datos de las " + fmtTime.format(state.updated) + "." : ""; // Si había datos anteriores, avisa de su hora
+    setLive("err", "Sin conexión con Open-Meteo: " + err.message + "." + when); // Indicador en rojo con el motivo concreto
+  } // Fin del try/catch
+  render(); // Vuelve a pintar toda la interfaz con los datos disponibles
+} // Fin de load
+
+function selectIsland(id) { // Cambia de isla
+  if (id === state.island) return; // Si ya está seleccionada, no hace nada
+  state.island = id; // Guarda la nueva isla en el estado
+  state.day = 0; // Vuelve al día de hoy
+  state.error = null; // Borra el error de la isla anterior
+  try { localStorage.setItem(PREF_KEY, id); } catch (e) {} // Recuerda la isla para la próxima visita
+  loadCache(); // Muestra al instante los últimos datos guardados de esa isla, si los hay
+  render(); // Repinta con la nueva isla
+  applyPhoto(null); // Quita la foto de la isla anterior mientras llega la nueva
+  loadPhoto(id); // Carga la foto de fondo de la nueva isla
+  load(); // Descarga los datos frescos de la nueva isla
+} // Fin de selectIsland
+
+function setLive(cls, text) { // Cambia el color y el texto del indicador "en vivo"
+  const el = document.getElementById("live"); // Busca el elemento del indicador
+  el.className = "live " + (cls === "ok" ? "" : cls); // Asigna la clase de color (sin clase extra = verde)
+  el.textContent = text; // Escribe el texto
+} // Fin de setLive
+
+function beachData(i) { // Reúne todos los datos de la playa número i para el día seleccionado
+  const w = state.weather[i]; // Previsión de esta playa (mismo orden que la lista de playas)
+  const m = state.marine ? state.marine[i] : null; // Datos marinos de esta playa, si existen
+  const d = state.day; // Índice del día elegido (0 = hoy)
+  return { // Devuelve un objeto con los valores ya extraídos
+    now: d === 0, // true si estamos viendo hoy, para mostrar los datos "ahora"
+    tempNow: w.current.temperature_2m, // Temperatura en este momento
+    max: w.daily.temperature_2m_max[d], // Temperatura máxima del día
+    min: w.daily.temperature_2m_min[d], // Temperatura mínima del día
+    rain: w.daily.precipitation_probability_max[d], // Probabilidad máxima de lluvia del día (%)
+    sky: d === 0 ? w.current.weather_code : w.daily.weather_code[d], // Código de cielo: actual si es hoy, diario si no
+    wind: d === 0 ? w.current.wind_speed_10m : w.daily.wind_speed_10m_max[d], // Viento: actual si es hoy, máximo diario si no
+    windDir: d === 0 ? w.current.wind_direction_10m : w.daily.wind_direction_10m_dominant[d], // Dirección del viento en grados (de dónde viene)
+    uv: w.daily.uv_index_max[d], // Índice UV máximo del día
+    wave: m ? (d === 0 ? m.current?.wave_height : m.daily?.wave_height_max?.[d]) : null, // Altura de ola en metros (puede no existir)
+    sea: m && d === 0 ? m.current?.sea_surface_temperature : null, // Temperatura del agua, solo disponible para "ahora"
+    series: w.daily.temperature_2m_max // Máximas de los 7 días para el mini-gráfico
+  }; // Fin del objeto
+} // Fin de beachData
+
+const cls = (v, a, b) => (v == null ? "" : v <= a ? "ok" : v <= b ? "mid" : "hi"); // Elige verde/ámbar/rojo según dos umbrales
+const compass = deg => ["N","NE","E","SE","S","SO","O","NO"][Math.round(deg / 45) % 8]; // Convierte grados en punto cardinal
+
+function score(i) { // Puntúa una playa para el día elegido: más alto = mejor para bañarse
+  const x = beachData(i); // Obtiene sus datos
+  return x.max * 1.2 // Premia el calor
+    - (x.rain ?? 0) * 0.12 // Penaliza la probabilidad de lluvia
+    - (x.wind ?? 0) * 0.15 // Penaliza el viento
+    - (x.wave ?? 0) * 3 // Penaliza las olas
+    - beaches()[i].exp * 1.5; // Penaliza la exposición al alisio
+} // Fin de score
+
+function renderIslands() { // Pinta las pestañas de islas
+  const el = document.getElementById("islands"); // Contenedor de las pestañas
+  el.innerHTML = ""; // Lo vacía antes de volver a pintarlo
+  ISLANDS.forEach(isl => { // Recorre cada isla
+    const b = document.createElement("button"); // Crea un botón
+    b.className = "isl"; // Le aplica el estilo de pestaña
+    b.type = "button"; // Botón normal, no de formulario
+    b.textContent = isl.name; // Escribe el nombre de la isla
+    b.setAttribute("aria-pressed", String(isl.id === state.island)); // Marca si es la isla seleccionada
+    b.onclick = () => selectIsland(isl.id); // Al pulsarlo, cambia de isla
+    el.appendChild(b); // Añade la pestaña a la fila
+  }); // Fin del recorrido de islas
+  document.getElementById("islandTitle").textContent = island().name; // Pone el nombre de la isla en el título grande
+  document.title = "Playas de " + island().name; // Cambia también el texto de la pestaña del navegador
+} // Fin de renderIslands
+
+function renderDays() { // Pinta la fila de botones de día
+  const el = document.getElementById("days"); // Contenedor de los botones
+  el.innerHTML = ""; // Lo vacía antes de volver a pintarlo
+  if (!state.weather) return; // Si aún no hay datos, no hay días que mostrar
+  state.weather[0].daily.time.forEach((iso, i) => { // Recorre las fechas de la previsión
+    const b = document.createElement("button"); // Crea un botón
+    b.className = "day"; // Le aplica el estilo de día
+    b.type = "button"; // Indica que es un botón normal, no de formulario
+    b.setAttribute("aria-pressed", String(i === state.day)); // Marca si es el día seleccionado
+    const label = i === 0 ? "Hoy" : i === 1 ? "Mañana" : fmtDay.format(asDate(iso)).replace(".", ""); // Texto: Hoy, Mañana o día abreviado
+    b.innerHTML = "<strong>" + label + "</strong><small>" + fmtNum.format(asDate(iso)) + "</small>"; // Contenido: nombre y fecha
+    b.onclick = () => { state.day = i; render(); }; // Al pulsarlo, cambia el día y repinta
+    el.appendChild(b); // Añade el botón a la fila
+  }); // Fin del recorrido de fechas
+} // Fin de renderDays
+
+function renderFilters() { // Pinta los botones de filtro
+  const el = document.getElementById("filters"); // Contenedor de filtros
+  el.innerHTML = ""; // Lo vacía
+  TYPES.forEach(([key, text]) => { // Recorre cada filtro
+    const b = document.createElement("button"); // Crea un botón
+    b.className = "chip"; // Estilo píldora
+    b.type = "button"; // Botón normal
+    b.textContent = text; // Texto visible
+    b.setAttribute("aria-pressed", String(state.type === key)); // Marca si está activo
+    b.onclick = () => { state.type = key; render(); }; // Al pulsar, cambia el filtro y repinta
+    el.appendChild(b); // Lo añade a la fila
+  }); // Fin del recorrido
+} // Fin de renderFilters
+
+function spark(series) { // Dibuja el mini-gráfico SVG de máximas de la semana
+  const W = 280, H = 46, pad = 4; // Ancho, alto y margen interior del dibujo
+  const lo = Math.min(...series) - 0.5, hi = Math.max(...series) + 0.5; // Rango vertical con medio grado de holgura
+  const x = i => pad + i * (W - 2 * pad) / (series.length - 1); // Posición horizontal del día i
+  const y = v => H - 12 - (v - lo) / (hi - lo) * (H - 20); // Posición vertical de la temperatura v
+  const pts = series.map((v, i) => x(i).toFixed(1) + "," + y(v).toFixed(1)).join(" "); // Puntos de la línea en formato "x,y x,y"
+  const area = "M" + x(0) + "," + (H - 12) + " L" + pts.split(" ").join(" L") + " L" + x(series.length - 1) + "," + (H - 12) + " Z"; // Contorno del área bajo la línea
+  const cx = x(state.day), cy = y(series[state.day]); // Coordenadas del día seleccionado
+  const dates = state.weather[0].daily.time; // Fechas para los rótulos inicial y final
+  return '<svg class="spark" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" role="img" aria-label="Máximas de la semana">' // Abre el SVG
+    + '<path d="' + area + '" fill="var(--sea-soft)"/>' // Área rellena en azul suave
+    + '<polyline points="' + pts + '" fill="none" stroke="var(--sea)" stroke-width="1.6" vector-effect="non-scaling-stroke"/>' // Línea de temperaturas
+    + '<line x1="' + cx + '" x2="' + cx + '" y1="2" y2="' + (H - 12) + '" stroke="var(--ink)" stroke-dasharray="2 2" vector-effect="non-scaling-stroke"/>' // Línea vertical en el día elegido
+    + '<circle cx="' + cx + '" cy="' + cy + '" r="3.2" fill="var(--ink)"/>' // Punto en el día elegido
+    + '<text x="' + pad + '" y="' + (H - 1) + '">' + fmtNum.format(asDate(dates[0])) + '</text>' // Fecha inicial abajo a la izquierda
+    + '<text x="' + (W - pad) + '" y="' + (H - 1) + '" text-anchor="end">' + fmtNum.format(asDate(dates[dates.length - 1])) + '</text>' // Fecha final abajo a la derecha
+    + '</svg>'; // Cierra el SVG
+} // Fin de spark
+
+function card(i) { // Construye el HTML de la tarjeta de la playa i
+  const b = beaches()[i]; // Datos fijos de la playa
+  const x = beachData(i); // Datos meteorológicos del día elegido
+  const [expText, expCls] = EXP[b.exp]; // Texto y color de su exposición al alisio
+  const q = encodeURIComponent(b.n + " " + island().name); // Texto de búsqueda de fotos con el nombre de la isla, codificado para la URL
+  const maps = "https://www.google.com/maps/search/?api=1&query=" + b.lat + "," + b.lon; // Enlace para ver la playa en Google Maps
+  const big = x.now ? round(x.tempNow) + "°" : round(x.max) + "°"; // Número grande: temperatura actual si es hoy, máxima si no
+  const sub = x.now ? "ahora · " + round(x.max) + "°/" + round(x.min) + "°" : "máx · mín " + round(x.min) + "°"; // Rótulo pequeño bajo el número
+  const arrow = x.windDir == null ? "" : '<span class="arrow" style="transform:rotate(' + (x.windDir + 180) + 'deg)" aria-hidden="true">↑</span>'; // Flecha que apunta hacia donde sopla el viento
+  return [ // Lista de trozos de HTML que se unen al final
+    '<article class="card">', // Abre la tarjeta
+    '<button class="photo s-' + b.sand.toLowerCase() + '" type="button" data-cam="' + i + '" aria-label="Ver cámaras en directo cerca de ' + b.n + '"><span>En directo</span></button>', // Franja que abre las cámaras en directo; data-cam guarda el número de playa
+    '<div class="top"><div><h3>' + b.n + '</h3><div class="town">' + b.town + ' · arena ' + b.sand.toLowerCase() + '</div></div>', // Nombre, municipio y arena
+    '<div class="temp">' + big + '<small>' + sub + '</small></div></div>', // Temperatura grande y su rótulo
+    '<dl class="stats">', // Abre la lista de datos
+    '<div class="stat"><dt>Cielo</dt><dd>' + skyText(x.sky) + '</dd></div>', // Estado del cielo
+    '<div class="stat"><dt>Lluvia</dt><dd class="' + cls(x.rain, 10, 30) + '">' + round(x.rain) + ' %</dd></div>', // Probabilidad de lluvia con color
+    '<div class="stat"><dt>Viento</dt><dd class="' + cls(x.wind, 20, 35) + '">' + arrow + round(x.wind) + ' km/h ' + (x.windDir == null ? "" : compass(x.windDir)) + '</dd></div>', // Viento con flecha, velocidad y dirección
+    '<div class="stat"><dt>Olas</dt><dd class="' + cls(x.wave, 1, 2) + '">' + (x.wave == null ? "—" : x.wave.toFixed(1) + ' m') + '</dd></div>', // Altura de ola con color
+    '<div class="stat"><dt>Agua</dt><dd>' + (x.sea == null ? "—" : round(x.sea) + '°') + '</dd></div>', // Temperatura del agua (solo hoy)
+    '<div class="stat"><dt>Alisio</dt><dd class="' + expCls + '">' + expText + '</dd></div>', // Exposición fija al alisio
+    '</dl>', // Cierra la lista de datos
+    spark(x.series), // Añade el mini-gráfico de la semana
+    '<p class="note">' + b.note + ' UV máx. ' + round(x.uv) + '.</p>', // Nota de la playa con el índice UV
+    aemetCode(b) ? '<div class="aemet" data-aemet="' + i + '"></div>' : '', // Hueco para la predicción de AEMET (solo si la playa tiene código AEMET)
+    '<p class="pcredit" data-credit="' + i + '" hidden></p>', // Crédito de la foto de la playa; se rellena si se encuentra una
+    '<p class="links"><a href="https://commons.wikimedia.org/w/index.php?search=' + q + '&title=Special:MediaSearch&type=image" target="_blank" rel="noopener">Fotos ↗</a><a href="' + maps + '" target="_blank" rel="noopener">Mapa ↗</a></p>', // Enlaces a fotos de Wikimedia y al mapa
+    '</article>' // Cierra la tarjeta
+  ].join(""); // Une todos los trozos en un solo texto HTML
+} // Fin de card
+
+function render() { // Pinta toda la interfaz según el estado actual
+  renderIslands(); // Pestañas de islas y título
+  renderDays(); // Botones de día
+  renderFilters(); // Botones de filtro
+  const coasts = document.getElementById("coasts"); // Contenedor de tarjetas
+  const best = document.getElementById("best"); // Recuadro de mejor opción
+  if (!state.weather) { // Si todavía no hay datos (primera carga o error sin datos previos)
+    best.hidden = true; // Oculta el recuadro de recomendación
+    coasts.innerHTML = '<p class="msg">' + (state.error // Si hubo error, explica el motivo y ofrece una prueba directa
+      ? "No se pudo descargar la previsión: " + state.error + ".<br><br>Para comprobarlo, abre este enlace en otra pestaña: <a href=\"" + urls().weather + "\" target=\"_blank\" rel=\"noopener\">probar la API de Open-Meteo</a>. Si ves un texto con datos, la API funciona y el bloqueo está en la página; si no carga, tu red no permite acceder a open-meteo.com." // Mensaje de error con enlace de prueba
+      : "Descargando la previsión de " + island().name + "…") + "</p>"; // Mensaje de carga
+    return; // Sale sin pintar nada más
+  } // Fin del caso sin datos
+  const list = beaches(); // Playas de la isla actual
+  const visible = list.map((b, i) => i).filter(i => state.type === "todas" || list[i].type.includes(state.type)); // Índices de las playas que pasan el filtro
+  const pool = visible.filter(i => list[i].swim); // Candidatas a "mejor opción": solo playas aptas para el baño
+  const top = (pool.length ? pool : visible).sort((a, b) => score(b) - score(a))[0]; // La de mayor puntuación
+  if (top != null) { // Si hay alguna playa visible
+    const x = beachData(top); // Datos de la ganadora
+    const day = fmtLong.format(asDate(state.weather[0].daily.time[state.day])); // Fecha larga del día elegido
+    best.innerHTML = '<span class="lbl">Mejor opción en ' + island().name + ' · ' + day + '</span>' // Etiqueta con la isla y la fecha
+      + '<span class="name">' + list[top].n + '</span>' // Nombre de la playa
+      + '<p>' + round(x.max) + '° de máxima, ' + round(x.rain) + ' % de lluvia, viento de ' + round(x.wind) + ' km/h' + (x.wave == null ? "" : ' y olas de ' + x.wave.toFixed(1) + ' m') + '.</p>'; // Resumen de por qué es la mejor
+    best.hidden = false; // Muestra el recuadro
+  } else { // Si el filtro no deja ninguna playa
+    best.hidden = true; // Oculta el recuadro
+  } // Fin del caso de recomendación
+  const html = COASTS.map(c => { // Recorre cada costa para construir su bloque
+    const items = visible.filter(i => list[i].coast === c.id); // Playas visibles de esta costa
+    if (!items.length) return ""; // Si no hay ninguna, no pinta la costa
+    return '<section class="coast"><h2>' + c.t + '<small>' + c.s + '</small></h2><div class="grid">' + items.map(card).join("") + '</div></section>'; // Título de la costa y sus tarjetas
+  }).join(""); // Une todos los bloques
+  coasts.innerHTML = html || '<p class="msg">Ninguna playa de ' + island().name + ' coincide con este filtro.</p>'; // Inserta el resultado o un aviso si está vacío
+  decorateBeachPhotos(); // Pone las fotos de las playas (guardadas o buscándolas al verse)
+  decorateAemet(); // Rellena la predicción oficial de AEMET de cada tarjeta
+} // Fin de render
+
+// ===== Foto de fondo de cada isla (Wikimedia Commons) =====
+const PHOTO_QUERY = { // Búsqueda de un paisaje emblemático para cada isla
+  lanzarote: "Timanfaya Lanzarote", // Parque Nacional de Timanfaya
+  graciosa: "La Graciosa Canarias playa", // Playas de La Graciosa
+  fuerteventura: "Dunas de Corralejo", // Dunas de Corralejo
+  grancanaria: "Roque Nublo", // Roque Nublo
+  tenerife: "Teide Tenerife", // El Teide
+  gomera: "Garajonay La Gomera", // Parque Nacional de Garajonay
+  palma: "Caldera de Taburiente", // Caldera de Taburiente
+  hierro: "El Golfo El Hierro" // Valle de El Golfo
+}; // Fin de las búsquedas
+const PHOTO_PREFIX = "playas-canarias-foto-"; // Prefijo para guardar en el navegador las fotos encontradas de cada isla
+const photos = {}; // Memoria de fotos: id de isla → {list, idx}
+
+function plainText(html) { // Quita las etiquetas HTML de un texto (el autor viene con enlaces HTML)
+  return new DOMParser().parseFromString(html || "", "text/html").body.textContent.trim(); // DOMParser no ejecuta nada: es seguro
+} // Fin de plainText
+
+const norm = s => (s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); // Pasa a minúsculas y quita tildes, para comparar textos
+
+async function searchPhotos(query, opt = {}) { // Busca en Wikimedia Commons fotos apaisadas que encajen con la búsqueda
+  const minWidth = opt.minWidth || 1600; // Ancho mínimo aceptado (por defecto 1600 px, para la cabecera)
+  const thumb = opt.thumb || 1920; // Ancho de la versión que se descargará
+  const url = "https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*" // API de Commons; origin=* permite llamarla desde el navegador
+    + "&generator=search&gsrnamespace=6&gsrlimit=30" // Busca entre archivos (espacio de nombres 6), hasta 30 resultados
+    + "&gsrsearch=" + encodeURIComponent(query + " filetype:bitmap") // Texto de búsqueda, solo imágenes
+    + "&prop=imageinfo&iiprop=url|size|mime|extmetadata&iiurlwidth=" + thumb; // Pide URL, tamaño, tipo, autor/licencia y una versión del ancho indicado
+  const data = (await getJson(url))[0]; // Descarga la respuesta (getJson la devuelve dentro de una lista)
+  const pages = Object.values(data.query?.pages || {}); // Convierte el objeto de resultados en una lista
+  return pages // Filtra y ordena los candidatos
+    .map(p => ({rank: p.index, title: norm(p.title), info: p.imageinfo?.[0]})) // Se queda con la posición, el título normalizado y los datos de la imagen
+    .map(p => ({...p, hits: opt.words ? opt.words.filter(w => p.title.includes(w)).length : 0})) // Cuenta cuántas palabras clave aparecen en el título
+    .filter(p => !opt.words || p.hits >= Math.min(2, opt.words.length)) // Si hay palabras clave, exige que el título contenga el nombre (todas si son 1-2, al menos 2 si son más)
+    .filter(p => p.info && p.info.mime === "image/jpeg" && p.info.width >= minWidth && p.info.width / p.info.height >= 1.2 && p.info.width / p.info.height <= 2.6) // Solo fotos JPG grandes y apaisadas (descarta mapas, dibujos y fotos verticales)
+    .sort((a, b) => b.hits - a.hits || a.rank - b.rank) // Primero las que más coinciden con el nombre, luego por relevancia
+    .slice(0, 8) // Se queda con las 8 mejores
+    .map(p => ({ // Guarda solo lo necesario
+      src: p.info.thumburl || p.info.url, // Versión de 1920 px (o la original si no hay)
+      link: p.info.descriptionurl, // Página de la foto en Commons
+      author: plainText(p.info.extmetadata?.Artist?.value).slice(0, 60) || "Autor desconocido", // Autor sin HTML, recortado
+      license: p.info.extmetadata?.LicenseShortName?.value || "" // Licencia (p. ej. CC BY-SA 4.0)
+    })); // Fin del formato
+} // Fin de searchPhotos
+
+function applyPhoto(id) { // Pone como fondo de la cabecera la foto actual de la isla
+  const header = document.querySelector("header"); // Cabecera de la página
+  const credit = document.getElementById("credit"); // Bloque del crédito
+  const p = photos[id]; // Fotos de esta isla
+  const photo = p && p.list[p.idx]; // Foto elegida
+  if (!photo) { // Si no hay foto
+    header.classList.remove("has-photo"); // Vuelve al degradado azul con el sol
+    header.style.removeProperty("--hero-photo"); // Quita la foto
+    credit.hidden = true; // Oculta el crédito
+    return; // Termina
+  } // Fin del caso sin foto
+  const img = new Image(); // Imagen auxiliar para precargar la foto antes de mostrarla
+  img.onload = () => { // Cuando la foto ha terminado de descargarse
+    if (state.island !== id) return; // Si el usuario ya cambió de isla, no la pone
+    header.style.setProperty("--hero-photo", 'url("' + photo.src.replace(/"/g, "%22") + '")'); // Pone la foto como capa de fondo
+    header.classList.add("has-photo"); // Activa el estilo "con foto"
+    credit.innerHTML = '<span>Foto: <a target="_blank" rel="noopener"></a>' + (photo.license ? " · " + photo.license : "") + " · Wikimedia Commons</span>" // Texto del crédito
+      + (p.list.length > 1 ? '<button type="button" id="nextPhoto">Otra foto</button>' : ""); // Botón para cambiar de foto si hay más de una
+    const a = credit.querySelector("a"); // Enlace al autor
+    a.textContent = photo.author; // Escribe el autor como texto (seguro)
+    a.href = photo.link; // Enlaza a la página de la foto
+    credit.hidden = false; // Muestra el crédito
+  }; // Fin de onload
+  img.onerror = () => { // Si la foto no se puede cargar
+    if (state.island !== id) return; // Ignora si ya cambió de isla
+    p.list.splice(p.idx, 1); // La quita de la lista
+    p.idx = 0; // Vuelve a la primera
+    applyPhoto(id); // Prueba con la siguiente
+  }; // Fin de onerror
+  img.src = photo.src; // Empieza la descarga
+} // Fin de applyPhoto
+
+async function loadPhoto(id) { // Consigue la foto de la isla (de la memoria, del navegador o de Commons)
+  if (!photos[id]) { // Si aún no está en memoria
+    try { photos[id] = JSON.parse(localStorage.getItem(PHOTO_PREFIX + id) || "null"); } catch (e) {} // Intenta leerla del navegador
+  } // Fin de la lectura guardada
+  if (!photos[id] || !photos[id].list.length) { // Si no hay fotos guardadas
+    try { // Intenta buscarlas
+      photos[id] = {list: await searchPhotos(PHOTO_QUERY[id]), idx: 0}; // Busca en Commons el paisaje de la isla y empieza por la primera
+      try { localStorage.setItem(PHOTO_PREFIX + id, JSON.stringify(photos[id])); } catch (e) {} // Las guarda para la próxima vez
+    } catch (e) { // Si la búsqueda falla
+      console.warn("No se pudo cargar la foto de fondo:", e.message); // Lo apunta en la consola, sin molestar al usuario
+      photos[id] = null; // Sin foto: se queda el degradado
+    } // Fin del try
+  } // Fin de la búsqueda
+  applyPhoto(id); // Pone la foto (o el degradado si no hay)
+} // Fin de loadPhoto
+
+// ===== Predicción oficial de playas (AEMET OpenData) =====
+// Código AEMET de cada playa, sacado del listado oficial Playas_codigos.csv de AEMET: [código, nombre en AEMET, 1 si es la playa AEMET más cercana y no la misma]
+const AEMET_CODES = { // Clave: "isla|nombre de la playa en esta app"
+  "lanzarote|Playa de Papagayo":[3503410,"Playa Blanca",1], // Papagayo → Playa Blanca (cercana)
+  "lanzarote|Playa Mujeres":[3503410,"Playa Blanca",1], // Mujeres → Playa Blanca (cercana)
+  "lanzarote|Playa Dorada":[3503410,"Playa Blanca",1], // Dorada → Playa Blanca (cercana)
+  "lanzarote|Playa Flamingo":[3503410,"Playa Blanca",1], // Flamingo → Playa Blanca (cercana)
+  "lanzarote|Playa Grande":[3502808,"Los Pocillos",1], // Playa Grande → Los Pocillos (cercana)
+  "lanzarote|Playa de los Pocillos":[3502808,"Los Pocillos",0], // Los Pocillos
+  "lanzarote|Playa del Reducto":[3500403,"El Reducto",0], // El Reducto
+  "lanzarote|Playa de las Cucharas":[3502425,"Las Cucharas",0], // Las Cucharas
+  "fuerteventura|Grandes Playas de Corralejo":[3501403,"Grandes Playas-El Caserón",0], // Grandes Playas
+  "fuerteventura|Playa de La Concha":[3501401,"Marfolín",1], // La Concha → Marfolín, El Cotillo (cercana)
+  "fuerteventura|Playa del Castillo":[3501401,"Marfolín",1], // El Castillo → Marfolín (cercana)
+  "fuerteventura|Playa de Caleta de Fuste":[3500301,"Caleta de Fuste",0], // Caleta de Fuste
+  "fuerteventura|Playa de Gran Tarajal":[3503001,"Gran Tarajal",0], // Gran Tarajal
+  "fuerteventura|Playa de Sotavento":[3501507,"Costa Calma y Sotavento de Jandía",0], // Sotavento
+  "fuerteventura|Playa de Esquinzo":[3501506,"Butihondo y El Matorral",0], // Esquinzo-Butihondo
+  "fuerteventura|Playa del Matorral":[3501506,"Butihondo y El Matorral",0], // El Matorral
+  "fuerteventura|Playa de Cofete":[3501503,"El Cofete",0], // Cofete
+  "fuerteventura|Playa de Ajuy":[3501501,"Ajuí",0], // Ajuy
+  "grancanaria|Playa de Las Canteras":[3501601,"Las Canteras",0], // Las Canteras
+  "grancanaria|Playa de Melenara":[3502601,"Melenara",0], // Melenara
+  "grancanaria|Pozo Izquierdo":[3502201,"Pozo Izquierdo, El Arenal",0], // Pozo Izquierdo
+  "grancanaria|Playa del Inglés":[3501902,"El Inglés",0], // Playa del Inglés
+  "grancanaria|Playa de Maspalomas":[3501901,"Maspalomas",0], // Maspalomas
+  "grancanaria|Playa de Amadores":[3501202,"Amadores",0], // Amadores
+  "grancanaria|Playa de Puerto de Mogán":[3501201,"Taurito",1], // Puerto de Mogán → Taurito (cercana)
+  "grancanaria|Playa de Sardina del Norte":[3500901,"Sardina",0], // Sardina
+  "tenerife|Playa de Las Teresitas":[3803806,"Las Teresitas",0], // Las Teresitas
+  "tenerife|Playa Jardín":[3802801,"Jardín",0], // Playa Jardín
+  "tenerife|Playa de El Bollullo":[3802601,"El Bollullo",0], // El Bollullo
+  "tenerife|Playa de El Médano":[3801705,"El Médano",0], // El Médano
+  "tenerife|Playa de La Tejita":[3801705,"El Médano",1], // La Tejita → El Médano (cercana)
+  "tenerife|Playa de Los Cristianos":[3800603,"Las Vistas",1], // Los Cristianos → Las Vistas (cercana)
+  "tenerife|Playa de Troya":[3800116,"Las Américas",1], // Troya → Las Américas (cercana)
+  "tenerife|Playa del Duque":[3800112,"Fañabe",1], // El Duque → Fañabe (cercana)
+  "tenerife|Playa de la Arena":[3804004,"La Arena",0], // La Arena
+  "gomera|Playa de San Sebastián":[3803605,"San Sebastián",0], // San Sebastián
+  "gomera|Playa de Santiago":[3800301,"Santiago",0], // Playa de Santiago
+  "gomera|Playa de Valle Gran Rey":[3804902,"Valle Gran Rey",0], // Valle Gran Rey
+  "gomera|Playa del Inglés":[3804902,"Valle Gran Rey",1], // Playa del Inglés (Gomera) → Valle Gran Rey (cercana)
+  "gomera|Playa de La Caleta":[3802101,"Hermigua",1], // La Caleta → Hermigua (cercana)
+  "palma|Playa de Los Cancajos":[3800901,"Los Cancajos",0], // Los Cancajos
+  "palma|Playa de Nogales":[3800302,"Nogales",0], // Nogales
+  "palma|Charco Azul":[3803302,"Charco Azul",0], // Charco Azul
+  "palma|Playa de La Zamora":[3801404,"El Faro",1], // La Zamora → El Faro, Fuencaliente (cercana)
+  "palma|Charco Verde":[3802403,"Puerto Naos",1], // Charco Verde → Puerto Naos (cercana)
+  "palma|Playa de Puerto Naos":[3802403,"Puerto Naos",0], // Puerto Naos
+  "palma|Playa de Puerto de Tazacorte":[3804502,"Puerto de Tazacorte",0], // Tazacorte
+  "hierro|Tamaduste":[3804803,"El Tamaduste",0], // Tamaduste
+  "hierro|La Restinga":[3801311,"La Restinga",0] // La Restinga
+}; // Fin de los códigos AEMET
+const AEMET_PREFIX = "playas-canarias-aemet-"; // Prefijo para guardar las predicciones de AEMET de cada playa
+const AEMET_TTL = 60 * 60 * 1000; // AEMET actualiza la predicción pocas veces al día: se reutiliza durante 1 hora
+const aemetData = new Map(); // Memoria: código AEMET → {time, days} o {error}
+const aemetQueued = new Set(); // Códigos ya en cola, para no pedirlos dos veces
+let aemetQueue = Promise.resolve(); // Cola para pedir las playas de una en una (AEMET limita las peticiones por minuto)
+
+const aemetCode = b => AEMET_CODES[state.island + "|" + b.n]; // Devuelve [código, nombre, cercana] de una playa, o undefined si no tiene
+
+function cachedAemet(code) { // Devuelve la predicción guardada de un código AEMET si tiene menos de 1 hora
+  if (!aemetData.has(code)) { // Si no está en memoria
+    try { const v = JSON.parse(localStorage.getItem(AEMET_PREFIX + code) || "null"); if (v) aemetData.set(code, v); } catch (e) {} // Intenta leerla del navegador
+  } // Fin de la lectura
+  const v = aemetData.get(code); // Valor guardado
+  return v && v.days && Date.now() - v.time < AEMET_TTL ? v : (v && v.error ? v : undefined); // Devuelve la predicción reciente, un error, o nada si hay que pedirla
+} // Fin de cachedAemet
+
+async function aemetFetch(code) { // Pide a nuestra función de Netlify la predicción de AEMET de una playa
+  const ctrl = new AbortController(); // Controlador para poder cancelar
+  const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS); // Cancela si tarda demasiado
+  try { // Intenta la petición
+    const res = await fetch("/api/aemet?code=" + code, {signal: ctrl.signal}); // La función hace los dos pasos con AEMET y guarda la clave en el servidor
+    const data = await res.json().catch(() => null); // Lee la respuesta como JSON (la función ya la devuelve en UTF-8)
+    if (!res.ok) throw new Error((data && data.error) || "el servidor respondió HTTP " + res.status); // Si la función devuelve error, muestra su motivo
+    return data; // Devuelve los datos de AEMET
+  } catch (e) { // Si algo falla
+    if (e.name === "AbortError") throw new Error("AEMET tardó demasiado en responder"); // Tiempo agotado
+    throw e; // Otros errores: tal cual
+  } finally { // Siempre
+    clearTimeout(timer); // Quita el temporizador
+  } // Fin del try
+} // Fin de aemetFetch
+
+const desc = (o, n) => (o && o["descripcion" + n]) || ""; // Lee "descripcion1" (mañana) o "descripcion2" (tarde) de un dato de AEMET
+const pair = o => { const a = desc(o, 1), t = desc(o, 2); return !a && !t ? "—" : a === t || !t ? a : a + " → " + t; }; // Une mañana y tarde: "nuboso → despejado" (o uno solo si coinciden)
+
+async function loadAemet(code) { // Descarga la predicción de playas de AEMET para un código
+  try { // Intenta descargar
+    const step2 = await aemetFetch(code); // Descarga la predicción a través de la función del servidor
+    const dias = (Array.isArray(step2) ? step2[0] : step2)?.prediccion?.dia || []; // Lista de días de la predicción
+    const days = dias.map(d => { const f = String(d.fecha); return { // Convierte cada día a un formato sencillo
+      date: f.slice(0, 4) + "-" + f.slice(4, 6) + "-" + f.slice(6, 8), // Fecha "20261009" → "2026-10-09"
+      cielo: pair(d.estadoCielo), // Cielo por la mañana → tarde
+      viento: pair(d.viento), // Viento por la mañana → tarde
+      oleaje: pair(d.oleaje), // Oleaje por la mañana → tarde
+      agua: d.tAgua?.valor1 ?? null, // Temperatura del agua (°C)
+      tmax: d.tMaxima?.valor1 ?? null, // Temperatura máxima (°C)
+      sensacion: desc(d.sTermica, 1), // Sensación térmica (p. ej. "suave", "calor agradable")
+      uv: d.uvMax?.valor1 ?? null // Índice UV máximo
+    }; }); // Fin de la conversión
+    aemetData.set(code, {time: Date.now(), days}); // Guarda en memoria
+    try { localStorage.setItem(AEMET_PREFIX + code, JSON.stringify(aemetData.get(code))); } catch (e) {} // Y en el navegador
+  } catch (e) { // Si falla
+    aemetData.set(code, {error: e.message, time: Date.now()}); // Guarda el error (solo en memoria) para mostrarlo
+    console.warn("AEMET", code, e.message); // Lo apunta en la consola
+  } // Fin del try
+  document.querySelectorAll(".aemet[data-aemet]").forEach(el => { if (aemetCode(beaches()[Number(el.dataset.aemet)])?.[0] === code) paintAemet(el); }); // Repinta las tarjetas que usan este código
+} // Fin de loadAemet
+
+function paintAemet(el) { // Pinta el bloque de AEMET de una tarjeta
+  const b = beaches()[Number(el.dataset.aemet)]; // Playa de la tarjeta
+  const [code, name, near] = aemetCode(b); // Su código, nombre en AEMET y si es cercana
+  const head = '<div class="ah"><b>AEMET · ' + name + (near ? ' (cercana)' : '') + '</b><a href="https://www.aemet.es/es/eltiempo/prediccion/playas?l=' + code + '" target="_blank" rel="noopener">Ver en AEMET ↗</a></div>'; // Cabecera con enlace a la ficha oficial
+  const v = aemetData.get(code); // Predicción guardada
+  if (!v) { el.innerHTML = head + '<p class="small">Cargando predicción oficial…</p>'; return; } // Aún cargando
+  if (v.error) { el.innerHTML = head + '<p class="small">No disponible: ' + v.error + '.</p>'; return; } // Error al cargar
+  const date = state.weather[0].daily.time[state.day]; // Fecha del día elegido
+  const d = v.days.find(x => x.date === date); // Predicción de AEMET para ese día
+  if (!d) { el.innerHTML = head + '<p class="small">AEMET solo publica la predicción de playas para los próximos días; no hay datos para esta fecha.</p>'; return; } // Fuera del rango de AEMET
+  el.innerHTML = head + '<dl>' // Lista de datos
+    + '<dt>Cielo</dt><dd>' + d.cielo + '</dd>' // Cielo mañana → tarde
+    + '<dt>Viento</dt><dd>' + d.viento + '</dd>' // Viento mañana → tarde
+    + '<dt>Oleaje</dt><dd>' + d.oleaje + '</dd>' // Oleaje mañana → tarde
+    + '<dt>Máx · agua</dt><dd>' + (d.tmax ?? "—") + '° · ' + (d.agua ?? "—") + '°</dd>' // Máxima del aire y temperatura del agua
+    + (d.sensacion ? '<dt>Sensación</dt><dd>' + d.sensacion + '</dd>' : '') // Sensación térmica, si la hay
+    + '</dl>'; // Cierra la lista
+} // Fin de paintAemet
+
+function decorateAemet() { // Tras pintar las tarjetas: rellena los bloques de AEMET y pide los que faltan
+  document.querySelectorAll(".aemet[data-aemet]").forEach(el => { // Recorre los bloques de AEMET
+    const code = aemetCode(beaches()[Number(el.dataset.aemet)])[0]; // Código de la playa
+    if (!cachedAemet(code) && !aemetQueued.has(code)) { // Si no hay datos recientes ni petición en curso
+      aemetData.delete(code); // Borra datos caducados para que se vea "Cargando…"
+      aemetQueued.add(code); // Marca el código como en cola
+      aemetQueue = aemetQueue.then(() => loadAemet(code)).finally(() => aemetQueued.delete(code)); // Lo añade a la cola de peticiones
+    } // Fin de la petición
+    paintAemet(el); // Pinta el bloque con lo que haya
+  }); // Fin del recorrido
+} // Fin de decorateAemet
+
+
+// ===== Foto de cada playa (Wikimedia Commons) =====
+const GENERIC = ["playa","playas","de","del","la","las","los","el","y","puerto","gran"]; // Palabras demasiado comunes para identificar una playa
+const BEACH_PREFIX = "playas-canarias-foto-playa-"; // Prefijo para guardar en el navegador la foto de cada playa
+const RETRY_DAYS = 7; // Si una playa no tiene foto, se vuelve a buscar pasados 7 días
+const beachPhotos = new Map(); // Memoria: clave de playa → {src, link, author, license} o {none:true, time}
+let photoQueue = Promise.resolve(); // Cola para hacer las búsquedas de una en una y no saturar Commons
+const queued = new Set(); // Playas ya en cola, para no buscarlas dos veces
+
+const beachKey = b => BEACH_PREFIX + norm(state.island + "-" + b.n).replace(/[^a-z0-9]+/g, "-"); // Clave única de la playa: isla + nombre sin tildes ni espacios
+
+function cachedBeachPhoto(b) { // Devuelve la foto guardada de una playa, si existe
+  const key = beachKey(b); // Clave de la playa
+  if (!beachPhotos.has(key)) { // Si no está en memoria
+    try { const v = JSON.parse(localStorage.getItem(key) || "null"); if (v) beachPhotos.set(key, v); } catch (e) {} // Intenta leerla del navegador
+  } // Fin de la lectura
+  const v = beachPhotos.get(key); // Valor guardado
+  if (v && v.none && Date.now() - v.time > RETRY_DAYS * 864e5) return undefined; // Si se marcó "sin foto" hace más de 7 días, se vuelve a intentar
+  return v; // Devuelve la foto, {none:true} o undefined si nunca se buscó
+} // Fin de cachedBeachPhoto
+
+function paintBeachPhoto(i) { // Pinta la foto de la playa i en su tarjeta, si la tiene
+  const b = beaches()[i]; // Datos de la playa
+  const v = cachedBeachPhoto(b); // Su foto guardada
+  const strip = document.querySelector('.photo[data-cam="' + i + '"]'); // Franja superior de su tarjeta
+  const credit = document.querySelector('[data-credit="' + i + '"]'); // Línea de crédito de su tarjeta
+  if (!strip || !v || v.none) return; // Si la tarjeta no está en pantalla o no hay foto, no hace nada
+  strip.style.setProperty("--beach-photo", 'url("' + v.src.replace(/"/g, "%22") + '")'); // Pone la foto como fondo de la franja
+  strip.classList.add("has-photo"); // Activa el estilo "con foto"
+  credit.textContent = "Foto: "; // Empieza el crédito
+  const a = document.createElement("a"); // Enlace al autor
+  a.href = v.link; // Página de la foto en Commons
+  a.target = "_blank"; // Se abre en otra pestaña
+  a.rel = "noopener"; // Seguridad al abrir en otra pestaña
+  a.textContent = v.author; // Nombre del autor como texto (seguro)
+  credit.append(a, (v.license ? " · " + v.license : "") + " · Wikimedia Commons"); // Añade autor, licencia y fuente
+  credit.hidden = false; // Muestra el crédito
+} // Fin de paintBeachPhoto
+
+async function fetchBeachPhoto(i, isl) { // Busca en Commons la foto de la playa i de la isla isl
+  if (state.island !== isl) return; // Si el usuario ya cambió de isla, no busca
+  const b = beaches()[i]; // Datos de la playa
+  const key = beachKey(b); // Su clave
+  const words = norm(b.n).split(/[^a-z0-9]+/).filter(w => w.length > 2 && !GENERIC.includes(w)); // Palabras distintivas del nombre (p. ej. "papagayo")
+  let value = {none: true, time: Date.now()}; // Por defecto, "sin foto"
+  try { // Intenta buscar
+    const list = await searchPhotos(b.n + " " + island().name, {minWidth: 800, thumb: 800, words: words.length ? words : [norm(b.n)]}); // Busca "nombre + isla", fotos de 800 px como mínimo, exigiendo el nombre en el título
+    if (list.length) value = list[0]; // Si hay alguna, se queda con la mejor
+  } catch (e) { // Si falla la conexión
+    console.warn("Foto de playa no disponible:", b.n, e.message); // Lo apunta en la consola
+    return; // No guarda nada: se reintentará en la próxima visita
+  } // Fin del try
+  beachPhotos.set(key, value); // Guarda en memoria
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) {} // Y en el navegador
+  if (state.island === isl) paintBeachPhoto(i); // Si sigue en la misma isla, la pinta
+} // Fin de fetchBeachPhoto
+
+const photoObserver = new IntersectionObserver(entries => { // Vigila qué tarjetas entran en pantalla
+  entries.forEach(en => { // Para cada tarjeta observada
+    if (!en.isIntersecting) return; // Si aún no se ve, espera
+    photoObserver.unobserve(en.target); // Deja de vigilarla
+    const i = Number(en.target.dataset.cam); // Número de la playa
+    const id = state.island + ":" + i; // Identificador para la cola
+    if (queued.has(id)) return; // Si ya está en cola, no la repite
+    queued.add(id); // La marca como en cola
+    const isl = state.island; // Isla actual en el momento de pedirla
+    photoQueue = photoQueue.then(() => fetchBeachPhoto(i, isl)).finally(() => queued.delete(id)); // Añade la búsqueda a la cola
+  }); // Fin del recorrido
+}, {rootMargin: "300px"}); // Empieza a buscar un poco antes de que la tarjeta aparezca
+
+function decorateBeachPhotos() { // Tras pintar las tarjetas: pone las fotos guardadas y vigila las que faltan
+  photoObserver.disconnect(); // Olvida las tarjetas del pintado anterior
+  document.querySelectorAll(".photo[data-cam]").forEach(el => { // Recorre las franjas de todas las tarjetas
+    const i = Number(el.dataset.cam); // Número de la playa
+    const v = cachedBeachPhoto(beaches()[i]); // Su foto guardada
+    if (v === undefined) photoObserver.observe(el); // Nunca buscada: se buscará cuando se vea
+    else paintBeachPhoto(i); // Ya buscada: se pinta al momento (si no tiene foto, no hace nada)
+  }); // Fin del recorrido
+} // Fin de decorateBeachPhotos
+
+document.getElementById("credit").addEventListener("click", e => { // Escucha clics en el crédito
+  if (e.target.id !== "nextPhoto") return; // Solo interesa el botón "Otra foto"
+  const p = photos[state.island]; // Fotos de la isla actual
+  p.idx = (p.idx + 1) % p.list.length; // Pasa a la siguiente (y vuelve a la primera al final)
+  try { localStorage.setItem(PHOTO_PREFIX + state.island, JSON.stringify(p)); } catch (e) {} // Recuerda la elección
+  applyPhoto(state.island); // Muestra la nueva foto
+}); // Fin del escuchador
+
+// ===== Cámaras en directo (Windy Webcams API) =====
+const CAM_TTL = 9 * 60 * 1000; // Las URLs de imagen gratuitas caducan a los 10 min: se renuevan a los 9
+const camCache = new Map(); // Memoria de cámaras ya consultadas: clave "lat,lon" → {time, cams}
+const cam = {beach:null, timer:null}; // Playa abierta en la ventana y temporizador de refresco
+
+function distKm(lat1, lon1, lat2, lon2) { // Distancia en km entre dos puntos (fórmula del haversine)
+  const r = Math.PI / 180; // Factor para pasar de grados a radianes
+  const a = Math.sin((lat2 - lat1) * r / 2) ** 2 + Math.cos(lat1 * r) * Math.cos(lat2 * r) * Math.sin((lon2 - lon1) * r / 2) ** 2; // Parte central de la fórmula
+  return 6371 * 2 * Math.asin(Math.sqrt(a)); // Multiplica por el radio de la Tierra (6371 km)
+} // Fin de distKm
+
+async function windyNearby(b, radius) { // Pide a Windy las cámaras a menos de "radius" km de la playa b
+  const url = "/api/webcams?lat=" + b.lat + "&lon=" + b.lon + "&radius=" + radius; // Nuestra función de Netlify, que llama a Windy con la clave guardada en el servidor
+  const ctrl = new AbortController(); // Controlador para poder cancelar
+  const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS); // Cancela si tarda demasiado
+  let res; // Respuesta del servidor
+  try { // Intenta la petición
+    res = await fetch(url, {signal: ctrl.signal}); // Petición a la función (sin clave: la añade el servidor)
+  } catch (e) { // Si no hubo respuesta
+    throw new Error(e.name === "AbortError" ? "Windy tardó demasiado en responder" : "no se pudo conectar con el servidor"); // Mensaje según el caso
+  } finally { // Siempre
+    clearTimeout(timer); // Quita el temporizador
+  } // Fin del try
+  const data = await res.json().catch(() => null); // Lee el JSON de la respuesta, si lo hay
+  if (!res.ok) throw new Error((data && data.error) || "el servidor respondió HTTP " + res.status); // Errores con el motivo que da la función
+  return (data && data.webcams) || []; // Devuelve la lista de cámaras (o vacía)
+} // Fin de windyNearby
+
+async function getCams(b) { // Devuelve las cámaras cercanas a la playa b, usando memoria si son recientes
+  const id = b.lat + "," + b.lon; // Identificador de la playa por sus coordenadas
+  const hit = camCache.get(id); // Busca si ya se consultó
+  if (hit && Date.now() - hit.time < CAM_TTL) return hit.cams; // Si es reciente, la reutiliza (ahorra cuota de la API)
+  let cams = await windyNearby(b, 10); // Primero busca a menos de 10 km
+  if (!cams.length) cams = await windyNearby(b, 40); // Si no hay ninguna, amplía a 40 km
+  cams = cams.map(c => ({ // Normaliza cada cámara a un formato sencillo
+    title: c.title || "Cámara", // Nombre de la cámara
+    image: c.images?.current?.preview || c.images?.current?.thumbnail || null, // Imagen actual (la de mayor tamaño disponible)
+    updated: c.lastUpdatedOn ? new Date(c.lastUpdatedOn) : null, // Hora de la última imagen
+    player: c.player?.live || c.player?.day || null, // Reproductor: en directo si existe, si no el timelapse del día
+    detail: c.urls?.detail || null, // Página de la cámara en Windy
+    km: c.location ? distKm(b.lat, b.lon, c.location.latitude, c.location.longitude) : null // Distancia a la playa
+  })).sort((a, z) => (a.km ?? 99) - (z.km ?? 99)); // Ordena de la más cercana a la más lejana
+  camCache.set(id, {time: Date.now(), cams}); // Guarda el resultado en memoria
+  return cams; // Devuelve la lista
+} // Fin de getCams
+
+function ago(d) { // Convierte una fecha en "hace X min"
+  if (!d) return ""; // Sin fecha, nada
+  const min = Math.round((Date.now() - d) / 60000); // Minutos transcurridos
+  return min < 1 ? "ahora mismo" : min < 60 ? "hace " + min + " min" : "hace " + Math.round(min / 60) + " h"; // Texto según el tiempo
+} // Fin de ago
+
+async function showCams() { // Rellena la ventana con las cámaras de la playa abierta
+  const body = document.getElementById("camBody"); // Contenido de la ventana
+  const b = cam.beach; // Playa abierta
+  if (!b) return; // Si no hay playa (ventana cerrada), no hace nada
+  if (!body.querySelector(".cams")) body.innerHTML = '<p class="msg">Buscando cámaras cerca de ' + b.n + '…</p>'; // Mensaje de búsqueda si aún no hay cámaras en pantalla
+  try { // Intenta obtener las cámaras
+    const cams = await getCams(b); // Pide las cámaras cercanas
+    if (cam.beach !== b) return; // Si el usuario cerró o cambió de playa mientras tanto, no pinta nada
+    if (!cams.length) { // Si no hay ninguna cámara en 40 km
+      body.innerHTML = '<p class="msg">No hay webcams públicas de Windy a menos de 40 km de ' + b.n + '.</p>'; // Lo indica
+      return; // Termina
+    } // Fin del caso sin cámaras
+    body.innerHTML = '<div class="cams">' + cams.map((c, k) => '<div class="cam">' // Una caja por cámara
+      + (c.image ? '<img src="' + c.image + '" alt="Imagen actual de ' + c.title + '" loading="lazy" data-k="' + k + '">' : '<div class="msg">Sin imagen</div>') // Imagen actual o aviso
+      + '<b>' + c.title + '</b>' // Nombre de la cámara
+      + '<small>' + (c.km == null ? "" : c.km.toFixed(1) + " km de la playa · ") + "imagen " + ago(c.updated) + '</small>' // Distancia y antigüedad de la imagen
+      + '<div class="row">' + (c.player ? '<button class="linkbtn" type="button" data-play="' + k + '">Ver vídeo</button>' : '') + (c.detail ? '<a href="' + c.detail + '" target="_blank" rel="noopener">Abrir en Windy ↗</a>' : '') + '</div>' // Acciones
+      + '</div>').join("") + '</div>' // Une todas las cámaras
+      + '<p class="note">Las imágenes se renuevan solas cada 9 minutos mientras esta ventana está abierta.</p>'; // Nota sobre el refresco
+  } catch (e) { // Si algo falló
+    if (cam.beach !== b) return; // Ignora errores de una playa que ya no está abierta
+    body.innerHTML = '<p class="msg">No se pudieron cargar las cámaras: ' + e.message + '.</p>'; // Otro error: lo muestra
+  } // Fin del try
+} // Fin de showCams
+
+function openCams(i) { // Abre la ventana de cámaras para la playa número i
+  const b = beaches()[i]; // Datos de la playa
+  cam.beach = b; // La marca como abierta
+  document.getElementById("camTitle").textContent = b.n; // Título: nombre de la playa
+  document.getElementById("camSub").textContent = b.town + " · " + island().name + " · webcams cercanas"; // Subtítulo
+  document.getElementById("camBody").innerHTML = ""; // Vacía el contenido anterior
+  document.getElementById("camDialog").showModal(); // Muestra la ventana encima de la página
+  showCams(); // Carga las cámaras
+  clearInterval(cam.timer); // Quita un refresco anterior, si lo hubiera
+  cam.timer = setInterval(() => { camCache.delete(b.lat + "," + b.lon); showCams(); }, CAM_TTL); // Cada 9 min fuerza imágenes nuevas
+} // Fin de openCams
+
+document.getElementById("coasts").addEventListener("click", e => { // Escucha clics en cualquier tarjeta
+  const btn = e.target.closest("[data-cam]"); // Busca si el clic fue en una franja "En directo"
+  if (btn) openCams(Number(btn.dataset.cam)); // Si es así, abre las cámaras de esa playa
+}); // Fin del escuchador de tarjetas
+
+document.getElementById("camBody").addEventListener("click", e => { // Escucha clics dentro de la ventana
+  const play = e.target.closest("[data-play]"); // ¿Se pulsó "Ver vídeo"?
+  if (play) { // Si es así
+    const c = camCache.get(cam.beach.lat + "," + cam.beach.lon)?.cams[Number(play.dataset.play)]; // Busca la cámara correspondiente
+    const box = play.closest(".cam"); // Caja de esa cámara
+    const media = box.querySelector("img, iframe, .msg"); // Imagen actual dentro de la caja
+    if (c && c.player && media) media.outerHTML = '<iframe src="' + c.player + '" title="Vídeo de ' + c.title + '" allowfullscreen></iframe>'; // Sustituye la imagen por el reproductor de Windy
+    play.remove(); // Quita el botón, ya no hace falta
+  } // Fin del caso vídeo
+}); // Fin del escuchador de la ventana
+
+
+document.getElementById("camClose").onclick = () => document.getElementById("camDialog").close(); // El botón "Cerrar" cierra la ventana
+document.getElementById("camDialog").addEventListener("close", () => { // Cuando la ventana se cierra (botón o tecla Esc)
+  cam.beach = null; // Ya no hay playa abierta
+  clearInterval(cam.timer); // Detiene el refresco de imágenes
+  document.getElementById("camBody").innerHTML = ""; // Vacía el contenido (detiene vídeos en reproducción)
+}); // Fin del escuchador de cierre
+document.getElementById("camDialog").addEventListener("click", e => { // Escucha clics en la ventana
+  if (e.target.id === "camDialog") e.target.close(); // Si el clic fue en el fondo oscuro (fuera del contenido), cierra
+}); // Fin del escuchador
+
+try { // Intenta recuperar la última isla elegida
+  const saved = localStorage.getItem(PREF_KEY); // Lee la isla guardada
+  if (ISLANDS.some(i => i.id === saved)) state.island = saved; // Si es una isla válida, la usa
+} catch (e) {} // Si no se puede leer, se queda con Lanzarote
+document.getElementById("refresh").onclick = load; // El botón "Actualizar ahora" vuelve a descargar los datos
+setInterval(load, REFRESH_MS); // Programa una descarga automática cada 10 minutos
+document.addEventListener("visibilitychange", () => { // Escucha cuando el usuario vuelve a la pestaña
+  if (!document.hidden && state.updated && Date.now() - state.updated > REFRESH_MS) load(); // Si los datos tienen más de 10 minutos, los renueva al volver
+}); // Fin del escuchador
+loadCache(); // Si hay datos de una visita anterior, los carga para mostrarlos al instante
+render(); // Pinta la interfaz inicial (datos guardados o mensaje de carga)
+load(); // Lanza la primera descarga de datos
+loadPhoto(state.island); // Carga la foto de fondo de la isla inicial
+</script> <!-- Fin del código JavaScript -->
+</body> <!-- Fin del contenido visible -->
+</html> <!-- Fin del documento -->

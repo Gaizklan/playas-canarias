@@ -1,0 +1,13 @@
+# Configuración de Netlify para "Playas de Canarias"
+
+[build]
+  publish = "."                       # La web es la propia carpeta (index.html está en la raíz)
+
+[functions]
+  directory = "netlify/functions"     # Carpeta donde están las funciones del servidor (aemet.mjs y webcams.mjs)
+
+[[headers]]
+  for = "/*"                          # Cabeceras de seguridad para todas las páginas
+  [headers.values]
+    X-Content-Type-Options = "nosniff" # Impide que el navegador "adivine" el tipo de archivo
+    Referrer-Policy = "strict-origin-when-cross-origin" # No envía la dirección completa a otras webs
